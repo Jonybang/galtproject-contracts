@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const GaltToken = artifacts.require('./GaltToken');
 const SpaceToken = artifacts.require('./SpaceToken');
 const LandUtils = artifacts.require('./LandUtils');
@@ -6,7 +8,8 @@ const SplitMerge = artifacts.require('./SplitMerge');
 const AdminUpgradeabilityProxy = artifacts.require('zos-lib/contracts/upgradeability/AdminUpgradeabilityProxy.sol');
 
 module.exports = async function(deployer, network, accounts) {
-  if (network === 'test' || network === 'local' || network === 'development') {
+  if (network === 'test' || network === 'local') {
+    // || network === 'development'
     console.log('Skipping deployment migration');
     return;
   }
@@ -41,6 +44,27 @@ module.exports = async function(deployer, network, accounts) {
   splitMerge.initialize(spaceToken.address, { from: coreTeam });
   plotManager.initialize(spaceToken.address, splitMerge.address, { from: coreTeam });
   landUtils.initialize({ from: coreTeam });
+
+  await new Promise(resolve => {
+    fs.writeFile(
+      `${__dirname}/../deployed.json`,
+      JSON.stringify(
+        {
+          spaceTokenAddress: spaceTokenProxy.address,
+          spaceTokenAbi: spaceToken.abi,
+          splitMergeAddress: splitMergeProxy.address,
+          splitMergeAbi: splitMerge.abi,
+          plotManagerAddress: plotManagerProxy.address,
+          plotManagerAbi: plotManager.abi,
+          landUtilsAddress: landUtilsProxy.address,
+          landUtilsAbi: landUtils.abi
+        },
+        null,
+        2
+      ),
+      resolve
+    );
+  });
 
   // Log out proxy addresses
   console.log('SpaceToken Proxy:', spaceToken.address);
