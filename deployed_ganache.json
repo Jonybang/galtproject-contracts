@@ -1,5 +1,5 @@
 {
-  "galtTokenAddress": "0x0ac08e930ee18082838881fc58c977cec952f993",
+  "galtTokenAddress": "0x343afd83c88ec132c4f85b5842befe7bcc1a57b4",
   "galtTokenAbi": [
     {
       "constant": true,
@@ -423,7 +423,7 @@
       "type": "event"
     }
   ],
-  "spaceTokenAddress": "0x9a58d812017b1f05d0fb49702cd706184971a911",
+  "spaceTokenAddress": "0x89ee6646d0c2b039247885397ec55d25946a855b",
   "spaceTokenAbi": [
     {
       "constant": true,
@@ -1190,7 +1190,7 @@
       "type": "function"
     }
   ],
-  "splitMergeAddress": "0xca1eff1ae0664702c9a11fdb48af7c121ec8426f",
+  "splitMergeAddress": "0xad1804b72294817fdfddea9c69f27aa6b1832c87",
   "splitMergeAbi": [
     {
       "constant": true,
@@ -1483,7 +1483,7 @@
       "type": "function"
     }
   ],
-  "plotManagerAddress": "0x18f2d06e80912f2d81c6dd6ac7fdbd76303d8245",
+  "plotManagerAddress": "0xc8b5ababdd8e009ccef029e2dd1884dfc0d10108",
   "plotManagerAbi": [
     {
       "constant": true,
@@ -1538,20 +1538,6 @@
     },
     {
       "constant": true,
-      "inputs": [],
-      "name": "owner",
-      "outputs": [
-        {
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
       "inputs": [
         {
           "name": "",
@@ -1562,11 +1548,25 @@
           "type": "uint256"
         }
       ],
-      "name": "applicationByAddresses",
+      "name": "applicationsByAddresses",
       "outputs": [
         {
           "name": "",
           "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
         }
       ],
       "payable": false,
@@ -1907,9 +1907,28 @@
       "payable": false,
       "stateMutability": "view",
       "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "applicant",
+          "type": "address"
+        }
+      ],
+      "name": "getApplicationsByAddress",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes32[]"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
     }
   ],
-  "landUtilsAddress": "0xe335742bb45d58885569a764b95a715e0a3e39a2",
+  "landUtilsAddress": "0x5aa500c20075add2033e929a7ee920a06a33cfd1",
   "landUtilsAbi": [
     {
       "constant": true,
