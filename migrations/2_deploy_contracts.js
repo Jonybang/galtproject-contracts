@@ -13,8 +13,6 @@ module.exports = async function(deployer, network, accounts) {
     return;
   }
 
-console.log('begin deploy');
-
   const coreTeam = accounts[0];
   // const proxiesAdmin = accounts[1];
 
@@ -38,8 +36,6 @@ console.log('begin deploy');
   // await SplitMerge.at(splitMergeProxy.address);
   // await PlotManager.at(plotManagerProxy.address);
   // await LandUtils.at(landUtilsProxy.address);
-
-  console.log('deployed contracts');
 
   // Call initialize methods (constructor substitute for proxy-backed contract)
   spaceToken.initialize(plotManager.address, 'Space Token', 'SPACE', { from: coreTeam });
