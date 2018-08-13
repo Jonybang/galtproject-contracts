@@ -77,6 +77,10 @@ contract PlotManager is Initializable, Ownable {
     _;
   }
 
+  function isValidator() view returns (bool) {
+    return validators[msg.sender].active == true;
+  }
+
   function addValidator(address _validator, bytes32 _name, bytes2 _country) public onlyOwner {
     require(_validator != address(0), "Missing validator");
     require(_country != 0x0, "Missing country");
