@@ -77,7 +77,7 @@ contract PlotManager is Initializable, Ownable {
     _;
   }
 
-  function isValidator() view returns (bool) {
+  function isValidator() public view returns (bool) {
     return validators[msg.sender].active == true;
   }
 
