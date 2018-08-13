@@ -1,5 +1,5 @@
 {
-  "galtTokenAddress": "0xd95a38948a730ef6ab904599b5a5c99aa17bd635",
+  "galtTokenAddress": "0xeaa445101731d6d299c41bc3a910e1a7423663c8",
   "galtTokenAbi": [
     {
       "constant": true,
@@ -423,7 +423,7 @@
       "type": "event"
     }
   ],
-  "spaceTokenAddress": "0x8a75eab9680779fff9e1bda8f45d0f9caefe4593",
+  "spaceTokenAddress": "0x9a52b48f0fcc9d61f91a190c31a041a553923693",
   "spaceTokenAbi": [
     {
       "constant": true,
@@ -1190,7 +1190,7 @@
       "type": "function"
     }
   ],
-  "splitMergeAddress": "0x2415be005d281b36a411f367d3588ed2672b4ee1",
+  "splitMergeAddress": "0x6c1340f4f77ab467416f8edbda804e640f74343b",
   "splitMergeAbi": [
     {
       "constant": true,
@@ -1483,7 +1483,7 @@
       "type": "function"
     }
   ],
-  "plotManagerAddress": "0xa48374efbc24eecdf6e0c9ff1ef57fa849707d74",
+  "plotManagerAddress": "0x1ae317309d2031a2e5ed8450bf0876ed809c48c5",
   "plotManagerAbi": [
     {
       "constant": true,
@@ -1709,6 +1709,20 @@
       "type": "function"
     },
     {
+      "constant": true,
+      "inputs": [],
+      "name": "isValidator",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "constant": false,
       "inputs": [
         {
@@ -1928,7 +1942,7 @@
       "type": "function"
     }
   ],
-  "landUtilsAddress": "0x8d6a65a54555a514ce2b595da1a625bedc301fd5",
+  "landUtilsAddress": "0x73f51a22ffb88625bcfe4bd5ad42fb87cb852966",
   "landUtilsAbi": [
     {
       "constant": true,
