@@ -216,6 +216,7 @@ contract PlotManager is Initializable, Ownable {
     public
     view
     returns (
+      bytes32 id,
       address applicant,
       uint256[] vertices,
       uint256 packageToken,
@@ -232,6 +233,7 @@ contract PlotManager is Initializable, Ownable {
     Application storage m = applications[_id];
 
     return (
+      _id,
       m.applicant,
       m.vertices,
       m.packageToken,

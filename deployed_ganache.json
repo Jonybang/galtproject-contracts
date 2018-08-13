@@ -1,5 +1,5 @@
 {
-  "galtTokenAddress": "0x340a17dad37add1c71958e2b0a9a7ecc2827b973",
+  "galtTokenAddress": "0x1fa0e9324bf058745b92eb3e4b4a1409849510a3",
   "galtTokenAbi": [
     {
       "constant": true,
@@ -423,7 +423,7 @@
       "type": "event"
     }
   ],
-  "spaceTokenAddress": "0xe9497dc789d44546369cf8e9b58cdd2a51040b9e",
+  "spaceTokenAddress": "0xe6ff298d57dffb004fea2d42ddfbea11302d4273",
   "spaceTokenAbi": [
     {
       "constant": true,
@@ -1190,7 +1190,7 @@
       "type": "function"
     }
   ],
-  "splitMergeAddress": "0xf075ff2a20e66abf14ea4722ea19f853891e2c77",
+  "splitMergeAddress": "0x53ee96bf407f8477d0172837e511408b5330d207",
   "splitMergeAbi": [
     {
       "constant": true,
@@ -1483,7 +1483,7 @@
       "type": "function"
     }
   ],
-  "plotManagerAddress": "0x1d606bc5f23aecbf499ce0fa1d6520e5041be0bf",
+  "plotManagerAddress": "0x37fba75da9e7191a6e23d0d355ef632718f6e2c7",
   "plotManagerAbi": [
     {
       "constant": true,
@@ -1923,6 +1923,10 @@
       "name": "getPlotApplication",
       "outputs": [
         {
+          "name": "id",
+          "type": "bytes32"
+        },
+        {
           "name": "applicant",
           "type": "address"
         },
@@ -1983,7 +1987,7 @@
       "type": "function"
     }
   ],
-  "landUtilsAddress": "0x25f4303ad200b1355deec1b3c7678b945b9f8943",
+  "landUtilsAddress": "0xe3e3649537042ffae41dd3dec9a6e344cda40b42",
   "landUtilsAbi": [
     {
       "constant": true,
