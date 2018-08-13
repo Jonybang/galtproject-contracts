@@ -3,6 +3,7 @@ const SpaceToken = artifacts.require('./SpaceToken');
 const LandUtils = artifacts.require('./LandUtils');
 const PlotManager = artifacts.require('./PlotManager');
 const SplitMerge = artifacts.require('./SplitMerge');
+const Web3 = require('web3');
 // const AdminUpgradeabilityProxy = artifacts.require('zos-lib/contracts/upgradeability/AdminUpgradeabilityProxy.sol');
 
 const fs = require('fs');
@@ -38,15 +39,22 @@ module.exports = async function(deployer, network, accounts) {
   // await LandUtils.at(landUtilsProxy.address);
 
   // Call initialize methods (constructor substitute for proxy-backed contract)
-  spaceToken.initialize(plotManager.address, 'Space Token', 'SPACE', { from: coreTeam });
-  spaceToken.setSplitMerge(splitMerge.address, { from: coreTeam });
+  await spaceToken.initialize(plotManager.address, 'Space Token', 'SPACE', { from: coreTeam });
+  await spaceToken.setSplitMerge(splitMerge.address, { from: coreTeam });
 
-  splitMerge.initialize(spaceToken.address, { from: coreTeam });
-  splitMerge.setPlotManager(plotManager.address, { from: coreTeam });
+  await splitMerge.initialize(spaceToken.address, { from: coreTeam });
+  await splitMerge.setPlotManager(plotManager.address, { from: coreTeam });
 
-  plotManager.initialize(spaceToken.address, splitMerge.address, { from: coreTeam });
+  await plotManager.initialize(spaceToken.address, splitMerge.address, { from: coreTeam });
 
-  landUtils.initialize({ from: coreTeam });
+  await landUtils.initialize({ from: coreTeam });
+
+  await plotManager.addValidator(
+    '0xf0430bbb78c3c359c22d4913484081a563b86170',
+    Web3.utils.utf8ToHex('Jonybang'),
+    Web3.utils.utf8ToHex('RU'),
+    { from: coreTeam }
+  );
 
   await new Promise(resolve => {
     fs.writeFile(
