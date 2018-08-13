@@ -1,5 +1,5 @@
 {
-  "galtTokenAddress": "0x4ddeb423e67f56fc547c331c9d75a517bc0c27ea",
+  "galtTokenAddress": "0x340a17dad37add1c71958e2b0a9a7ecc2827b973",
   "galtTokenAbi": [
     {
       "constant": true,
@@ -423,7 +423,7 @@
       "type": "event"
     }
   ],
-  "spaceTokenAddress": "0xa6f7fba38b03afe58df7cb93b1b82d6ddf2ae2f1",
+  "spaceTokenAddress": "0xe9497dc789d44546369cf8e9b58cdd2a51040b9e",
   "spaceTokenAbi": [
     {
       "constant": true,
@@ -1190,7 +1190,7 @@
       "type": "function"
     }
   ],
-  "splitMergeAddress": "0x7a36c548227c113d7c296194dcbdd7de30d8b709",
+  "splitMergeAddress": "0xf075ff2a20e66abf14ea4722ea19f853891e2c77",
   "splitMergeAbi": [
     {
       "constant": true,
@@ -1483,7 +1483,7 @@
       "type": "function"
     }
   ],
-  "plotManagerAddress": "0x97b11234a096836d60bb868da9125020c1a8e745",
+  "plotManagerAddress": "0x1d606bc5f23aecbf499ce0fa1d6520e5041be0bf",
   "plotManagerAbi": [
     {
       "constant": true,
@@ -1737,6 +1737,33 @@
       "type": "function"
     },
     {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "validator",
+          "type": "address"
+        }
+      ],
+      "name": "getValidator",
+      "outputs": [
+        {
+          "name": "name",
+          "type": "bytes32"
+        },
+        {
+          "name": "country",
+          "type": "bytes2"
+        },
+        {
+          "name": "active",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "constant": false,
       "inputs": [
         {
@@ -1956,7 +1983,7 @@
       "type": "function"
     }
   ],
-  "landUtilsAddress": "0x0bf55e40e09cc6418c6524c06056c4612ece5c44",
+  "landUtilsAddress": "0x25f4303ad200b1355deec1b3c7678b945b9f8943",
   "landUtilsAbi": [
     {
       "constant": true,
