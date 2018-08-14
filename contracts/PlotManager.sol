@@ -60,7 +60,7 @@ contract PlotManager is Initializable, Ownable {
     owner = msg.sender;
     spaceToken = _spaceToken;
     splitMerge = _splitMerge;
-    validationFee = 1 ether;
+    validationFee = 0.1 ether;
   }
 
   modifier onlyApplicant(bytes32 _aId) {
