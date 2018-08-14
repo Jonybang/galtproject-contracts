@@ -157,6 +157,10 @@ contract PlotManager is Initializable, Ownable {
     return applications[_aId].geohashTokens;
   }
 
+  function getApplicationsArray() public view returns (bytes32[]){
+    return applicationsArray;
+  }
+
   function mintPack(bytes32 _aId) public onlyApplicant(_aId) {
     // TODO: prevent double mint
     Application storage a = applications[_aId];
