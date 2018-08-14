@@ -113,6 +113,7 @@ contract PlotManager is Initializable, Ownable {
 
   function applyForPlotOwnership(
     uint256[] _vertices,
+    uint256 _baseGeohash,
     bytes32 _credentialsHash,
     bytes32 _ledgerIdentifier,
     bytes2 _country,
@@ -142,6 +143,7 @@ contract PlotManager is Initializable, Ownable {
     a.precision = _precision;
 
     applications[_id] = a;
+    applications[_id].geohashTokens.push(_baseGeohash);
     applicationsArray.push(_id);
     applicationsByAddresses[msg.sender].push(_id);
 

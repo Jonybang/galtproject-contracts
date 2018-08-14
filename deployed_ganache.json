@@ -1,5 +1,5 @@
 {
-  "galtTokenAddress": "0x1fa0e9324bf058745b92eb3e4b4a1409849510a3",
+  "galtTokenAddress": "0x4ca59167b8b3d51b4dda2b12ee585b36e5f20343",
   "galtTokenAbi": [
     {
       "constant": true,
@@ -423,7 +423,7 @@
       "type": "event"
     }
   ],
-  "spaceTokenAddress": "0xe6ff298d57dffb004fea2d42ddfbea11302d4273",
+  "spaceTokenAddress": "0xd9c91c1b9816c260a3525a1ac06500499ec3d3c5",
   "spaceTokenAbi": [
     {
       "constant": true,
@@ -1190,7 +1190,7 @@
       "type": "function"
     }
   ],
-  "splitMergeAddress": "0x53ee96bf407f8477d0172837e511408b5330d207",
+  "splitMergeAddress": "0x7483acd4050133f16cd32141147f6a4c03693e01",
   "splitMergeAbi": [
     {
       "constant": true,
@@ -1483,7 +1483,7 @@
       "type": "function"
     }
   ],
-  "plotManagerAddress": "0x37fba75da9e7191a6e23d0d355ef632718f6e2c7",
+  "plotManagerAddress": "0xf3dfb50a534f8830558a71bd8c0c5caa417a3536",
   "plotManagerAbi": [
     {
       "constant": true,
@@ -1710,7 +1710,12 @@
     },
     {
       "constant": true,
-      "inputs": [],
+      "inputs": [
+        {
+          "name": "account",
+          "type": "address"
+        }
+      ],
       "name": "isValidator",
       "outputs": [
         {
@@ -1805,6 +1810,10 @@
         {
           "name": "_vertices",
           "type": "uint256[]"
+        },
+        {
+          "name": "_baseGeohash",
+          "type": "uint256"
         },
         {
           "name": "_credentialsHash",
@@ -1987,7 +1996,7 @@
       "type": "function"
     }
   ],
-  "landUtilsAddress": "0xe3e3649537042ffae41dd3dec9a6e344cda40b42",
+  "landUtilsAddress": "0x5bfa521a5b70430188d34d0de7ae5267341591ed",
   "landUtilsAbi": [
     {
       "constant": true,
