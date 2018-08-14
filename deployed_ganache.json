@@ -1,5 +1,5 @@
 {
-  "galtTokenAddress": "0x4ca59167b8b3d51b4dda2b12ee585b36e5f20343",
+  "galtTokenAddress": "0x3bb3d95c53f97a4f917787279a0f799c268208ad",
   "galtTokenAbi": [
     {
       "constant": true,
@@ -423,7 +423,7 @@
       "type": "event"
     }
   ],
-  "spaceTokenAddress": "0xd9c91c1b9816c260a3525a1ac06500499ec3d3c5",
+  "spaceTokenAddress": "0xb7280310ee8e7964e2087467b6a8993177ee6c26",
   "spaceTokenAbi": [
     {
       "constant": true,
@@ -1190,7 +1190,7 @@
       "type": "function"
     }
   ],
-  "splitMergeAddress": "0x7483acd4050133f16cd32141147f6a4c03693e01",
+  "splitMergeAddress": "0xd9e668e56adead32556bd029118e6a8b67316e96",
   "splitMergeAbi": [
     {
       "constant": true,
@@ -1483,7 +1483,7 @@
       "type": "function"
     }
   ],
-  "plotManagerAddress": "0xf3dfb50a534f8830558a71bd8c0c5caa417a3536",
+  "plotManagerAddress": "0x0ee9ff70442309248b86ddba77444c951dd904e6",
   "plotManagerAbi": [
     {
       "constant": true,
@@ -1844,6 +1844,25 @@
       "type": "function"
     },
     {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_aId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getGeohashes",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "constant": false,
       "inputs": [
         {
@@ -1996,7 +2015,7 @@
       "type": "function"
     }
   ],
-  "landUtilsAddress": "0x5bfa521a5b70430188d34d0de7ae5267341591ed",
+  "landUtilsAddress": "0x41f2f8294bc24b48d2a89d1a3f6a1dd22077b009",
   "landUtilsAbi": [
     {
       "constant": true,
