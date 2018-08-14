@@ -177,6 +177,7 @@ contract PlotManager is Initializable, Ownable {
       a.geohashTokens.push(_geohashes[i]);
       emit NewGeohashMinted(bytes32(g), _aId);
     }
+    a.status = ApplicationStatuses.SWAPPED;
   }
 
   function swapTokens(bytes32 _aId) public onlyApplicant(_aId) {
