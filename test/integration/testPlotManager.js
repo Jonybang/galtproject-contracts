@@ -24,25 +24,27 @@ contract('PlotManager', ([deployer, alice, bob, charlie]) => {
     this.spaceToken = await SpaceToken.new('Space Token', 'SPACE', { from: deployer });
     this.splitMerge = await SplitMerge.new({ from: deployer });
 
-    this.spaceToken.initialize(this.plotManager.address, 'SpaceToken', 'SPACE', { from: deployer });
-    this.spaceToken.setSplitMerge(this.splitMerge.address, { from: deployer });
-    this.plotManager.initialize(this.spaceToken.address, this.splitMerge.address, { from: deployer });
-    this.splitMerge.initialize(this.spaceToken.address, { from: deployer });
+    await this.spaceToken.initialize(this.plotManager.address, 'SpaceToken', 'SPACE', { from: deployer });
+    await this.spaceToken.setSplitMerge(this.splitMerge.address, { from: deployer });
+    await this.plotManager.initialize(this.spaceToken.address, this.splitMerge.address, { from: deployer });
+    await this.splitMerge.initialize(this.spaceToken.address, { from: deployer });
 
     this.plotManagerWeb3 = new web3.eth.Contract(this.plotManager.abi, this.plotManager.address);
     this.spaceTokenWeb3 = new web3.eth.Contract(this.spaceToken.abi, this.spaceToken.address);
   });
 
   describe('contract', () => {
-    it('should provide methods to create and read an application', async function() {
+    it.only('should provide methods to create and read an application', async function() {
       const initVertices = ['qwerqwerqwer', 'ssdfssdfssdf', 'zxcvzxcvzxcv'];
       const initLedgerIdentifier = 'шц50023中222ائِيل';
 
       const vertices = initVertices.map(galt.geohashToNumber);
       const credentials = web3.utils.sha3(`Johnj$Galt$123456po`);
       const ledgerIdentifier = web3.utils.utf8ToHex(initLedgerIdentifier);
+      console.log('this.plotManager.applyForPlotOwnership', vertices);
       const res = await this.plotManager.applyForPlotOwnership(
         vertices,
+        vertices[0].toString(10),
         credentials,
         ledgerIdentifier,
         web3.utils.asciiToHex('MN'),
@@ -51,6 +53,8 @@ contract('PlotManager', ([deployer, alice, bob, charlie]) => {
       );
 
       const aId = res.logs[0].args.id;
+
+      console.log('aId', aId);
 
       const res2 = await this.plotManagerWeb3.methods.getPlotApplication(aId).call();
 
@@ -77,6 +81,7 @@ contract('PlotManager', ([deployer, alice, bob, charlie]) => {
       const ledgerIdentifier = web3.utils.utf8ToHex(initLedgerIdentifier);
       let res = await this.plotManager.applyForPlotOwnership(
         vertices,
+        vertices[0],
         credentials,
         ledgerIdentifier,
         web3.utils.asciiToHex('MN'),
