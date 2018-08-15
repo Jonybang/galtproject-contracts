@@ -1,5 +1,5 @@
 {
-  "galtTokenAddress": "0x1510e69ef359b78ca714af581d62d80265c4d75e",
+  "galtTokenAddress": "0xac52d2394c90c1ea3d35c1741cd2f8d42d489217",
   "galtTokenAbi": [
     {
       "constant": true,
@@ -423,7 +423,7 @@
       "type": "event"
     }
   ],
-  "spaceTokenAddress": "0x0d5edf91e2b15a719a34ff7bc47093767f0cc1c2",
+  "spaceTokenAddress": "0x13938decc15d4e97e3b297826209d60f5738267f",
   "spaceTokenAbi": [
     {
       "constant": true,
@@ -1190,7 +1190,7 @@
       "type": "function"
     }
   ],
-  "splitMergeAddress": "0x6498b668f38084d30195982cd096ffb0d726dcdb",
+  "splitMergeAddress": "0x7c2839d5e8c66c85e03dd880d9730ec45d630df1",
   "splitMergeAbi": [
     {
       "constant": true,
@@ -1483,7 +1483,7 @@
       "type": "function"
     }
   ],
-  "plotManagerAddress": "0x7b0e9a26766a5f128e72027192febd437b799fc5",
+  "plotManagerAddress": "0x1bd940c2a37b11e17c3755a01659fe625946db9a",
   "plotManagerAbi": [
     {
       "constant": true,
@@ -1538,20 +1538,6 @@
     },
     {
       "constant": true,
-      "inputs": [],
-      "name": "owner",
-      "outputs": [
-        {
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
       "inputs": [
         {
           "name": "",
@@ -1562,11 +1548,25 @@
           "type": "uint256"
         }
       ],
-      "name": "applicationByAddresses",
+      "name": "applicationsByAddresses",
       "outputs": [
         {
           "name": "",
           "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
         }
       ],
       "payable": false,
@@ -1709,6 +1709,66 @@
       "type": "function"
     },
     {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "isValidator",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getValidators",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "validator",
+          "type": "address"
+        }
+      ],
+      "name": "getValidator",
+      "outputs": [
+        {
+          "name": "name",
+          "type": "bytes32"
+        },
+        {
+          "name": "country",
+          "type": "bytes2"
+        },
+        {
+          "name": "active",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "constant": false,
       "inputs": [
         {
@@ -1752,6 +1812,10 @@
           "type": "uint256[]"
         },
         {
+          "name": "_baseGeohash",
+          "type": "uint256"
+        },
+        {
           "name": "_credentialsHash",
           "type": "bytes32"
         },
@@ -1777,6 +1841,39 @@
       ],
       "payable": false,
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_aId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getGeohashes",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getApplicationsArray",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes32[]"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -1868,6 +1965,10 @@
       "name": "getPlotApplication",
       "outputs": [
         {
+          "name": "id",
+          "type": "bytes32"
+        },
+        {
           "name": "applicant",
           "type": "address"
         },
@@ -1907,9 +2008,28 @@
       "payable": false,
       "stateMutability": "view",
       "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "applicant",
+          "type": "address"
+        }
+      ],
+      "name": "getApplicationsByAddress",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes32[]"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
     }
   ],
-  "landUtilsAddress": "0x75c277e905b590972234192b1803dc9bb4c27049",
+  "landUtilsAddress": "0x3b289d3c4c37368d360ce6258e1c0c950bafc1b1",
   "landUtilsAbi": [
     {
       "constant": true,
