@@ -41,13 +41,15 @@ module.exports = async function(deployer, network, accounts) {
     // await LandUtils.at(landUtilsProxy.address);
 
     // Call initialize methods (constructor substitute for proxy-backed contract)
-    await spaceToken.initialize(plotManager.address, 'Space Token', 'SPACE', { from: coreTeam });
-    await spaceToken.setSplitMerge(splitMerge.address, { from: coreTeam });
+    await spaceToken.initialize('Space Token', 'SPACE', { from: coreTeam });
+    await spaceToken.addRoleTo(plotManager.address, 'minter', { from: coreTeam });
 
     await splitMerge.initialize(spaceToken.address, { from: coreTeam });
     await splitMerge.setPlotManager(plotManager.address, { from: coreTeam });
 
-    await plotManager.initialize(spaceToken.address, splitMerge.address, { from: coreTeam });
+    await plotManager.initialize(Web3.utils.toWei('0.1', 'ether'), '25', spaceToken.address, splitMerge.address, {
+      from: coreTeam
+    });
 
     await landUtils.initialize({ from: coreTeam });
 

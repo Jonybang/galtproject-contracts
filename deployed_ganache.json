@@ -1,5 +1,5 @@
 {
-  "galtTokenAddress": "0x8a72be018d6203f07325060a353418597807d020",
+  "galtTokenAddress": "0x13478c64f45d4a19e52c0417a40cfe15690606d8",
   "galtTokenAbi": [
     {
       "constant": true,
@@ -423,7 +423,7 @@
       "type": "event"
     }
   ],
-  "spaceTokenAddress": "0xc8006bdb53a6c9adf2b183e997d643efc1f267a2",
+  "spaceTokenAddress": "0xa79a73cf669acfd602fcf9a56414ad8268994c42",
   "spaceTokenAbi": [
     {
       "constant": true,
@@ -497,6 +497,24 @@
     },
     {
       "constant": true,
+      "inputs": [
+        {
+          "name": "_operator",
+          "type": "address"
+        },
+        {
+          "name": "_role",
+          "type": "string"
+        }
+      ],
+      "name": "checkRole",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
       "inputs": [],
       "name": "initialized",
       "outputs": [
@@ -531,6 +549,29 @@
         {
           "name": "",
           "type": "bytes4"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_operator",
+          "type": "address"
+        },
+        {
+          "name": "_role",
+          "type": "string"
+        }
+      ],
+      "name": "hasRole",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
         }
       ],
       "payable": false,
@@ -658,6 +699,20 @@
     },
     {
       "constant": true,
+      "inputs": [],
+      "name": "ROLE_BURNER",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
       "inputs": [
         {
           "name": "_tokenId",
@@ -720,7 +775,35 @@
     {
       "constant": true,
       "inputs": [],
+      "name": "ROLE_MINTER",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
       "name": "symbol",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "ROLE_OPERATOR",
       "outputs": [
         {
           "name": "",
@@ -867,6 +950,18 @@
           "indexed": false,
           "name": "id",
           "type": "bytes32"
+        }
+      ],
+      "name": "LogNewPackIdGenerated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "tokenId",
+          "type": "bytes32"
         },
         {
           "indexed": false,
@@ -874,7 +969,58 @@
           "type": "address"
         }
       ],
-      "name": "SpaceTokenMinted",
+      "name": "LogPackTokenMinted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "tokenId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "LogGeohashTokenMinted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "operator",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "role",
+          "type": "string"
+        }
+      ],
+      "name": "RoleAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "operator",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "role",
+          "type": "string"
+        }
+      ],
+      "name": "RoleRemoved",
       "type": "event"
     },
     {
@@ -976,10 +1122,6 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_owner",
-          "type": "address"
-        },
-        {
           "name": "_name",
           "type": "string"
         },
@@ -998,38 +1140,6 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_splitMerge",
-          "type": "address"
-        }
-      ],
-      "name": "setSplitMerge",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "_to",
-          "type": "address"
-        },
-        {
-          "name": "_tokenId",
-          "type": "uint256"
-        }
-      ],
-      "name": "mint",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
           "name": "_to",
           "type": "address"
         }
@@ -1037,7 +1147,7 @@
       "name": "mintPack",
       "outputs": [
         {
-          "name": "_tokenId",
+          "name": "",
           "type": "uint256"
         }
       ],
@@ -1049,20 +1159,21 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_packageId",
-          "type": "uint256"
-        },
-        {
-          "name": "_geohashIds",
-          "type": "uint256[]"
-        },
-        {
-          "name": "_beneficiary",
+          "name": "_to",
           "type": "address"
+        },
+        {
+          "name": "_geohash5",
+          "type": "uint256"
         }
       ],
-      "name": "swapToPack",
-      "outputs": [],
+      "name": "mintGeohash",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
       "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
@@ -1177,20 +1288,42 @@
     },
     {
       "constant": false,
-      "inputs": [],
-      "name": "generatePackTokenId",
-      "outputs": [
+      "inputs": [
         {
-          "name": "",
-          "type": "uint256"
+          "name": "_operator",
+          "type": "address"
+        },
+        {
+          "name": "_role",
+          "type": "string"
         }
       ],
+      "name": "addRoleTo",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_operator",
+          "type": "address"
+        },
+        {
+          "name": "_role",
+          "type": "string"
+        }
+      ],
+      "name": "removeRoleFrom",
+      "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     }
   ],
-  "splitMergeAddress": "0x021cba34def7eebb62a65b4587d92affd497d4d7",
+  "splitMergeAddress": "0x89db70f8394d30c2a4735604d2f3272c7ae6b597",
   "splitMergeAbi": [
     {
       "constant": true,
@@ -1223,6 +1356,29 @@
         {
           "name": "",
           "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "packageToGeohashes",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
         }
       ],
       "payable": false,
@@ -1327,21 +1483,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_geohashToken",
-          "type": "uint256"
-        }
-      ],
-      "name": "mintGeohash",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "_firstGeohashToken",
+          "name": "_firstGeohashTokenId",
           "type": "uint256"
         }
       ],
@@ -1483,7 +1625,7 @@
       "type": "function"
     }
   ],
-  "plotManagerAddress": "0xf1918e26955b3d83f1e3d5233614edfeec30c72d",
+  "plotManagerAddress": "0x820f88ef0cceffe69613f18e88a705b79115b0ac",
   "plotManagerAbi": [
     {
       "constant": true,
@@ -1507,6 +1649,79 @@
         {
           "name": "",
           "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "validationFeeInEth",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "name": "applications",
+      "outputs": [
+        {
+          "name": "id",
+          "type": "bytes32"
+        },
+        {
+          "name": "applicant",
+          "type": "address"
+        },
+        {
+          "name": "validator",
+          "type": "address"
+        },
+        {
+          "name": "credentialsHash",
+          "type": "bytes32"
+        },
+        {
+          "name": "ledgerIdentifier",
+          "type": "bytes32"
+        },
+        {
+          "name": "packageTokenId",
+          "type": "uint256"
+        },
+        {
+          "name": "fee",
+          "type": "uint256"
+        },
+        {
+          "name": "feePaid",
+          "type": "bool"
+        },
+        {
+          "name": "precision",
+          "type": "uint8"
+        },
+        {
+          "name": "country",
+          "type": "bytes2"
+        },
+        {
+          "name": "status",
+          "type": "uint8"
         }
       ],
       "payable": false,
@@ -1588,6 +1803,33 @@
       "type": "function"
     },
     {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "validators",
+      "outputs": [
+        {
+          "name": "name",
+          "type": "bytes32"
+        },
+        {
+          "name": "country",
+          "type": "bytes2"
+        },
+        {
+          "name": "active",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -1607,7 +1849,7 @@
           "type": "uint8"
         }
       ],
-      "name": "ApplicationStatusChanged",
+      "name": "LogApplicationStatusChanged",
       "type": "event"
     },
     {
@@ -1624,41 +1866,7 @@
           "type": "address"
         }
       ],
-      "name": "NewApplication",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "name": "spaceTokenId",
-          "type": "bytes32"
-        },
-        {
-          "indexed": false,
-          "name": "applicationId",
-          "type": "bytes32"
-        }
-      ],
-      "name": "NewPackMinted",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "name": "spaceTokenId",
-          "type": "bytes32"
-        },
-        {
-          "indexed": false,
-          "name": "applicationId",
-          "type": "bytes32"
-        }
-      ],
-      "name": "NewGeohashMinted",
+      "name": "LogNewApplication",
       "type": "event"
     },
     {
@@ -1694,6 +1902,14 @@
       "constant": false,
       "inputs": [
         {
+          "name": "_validationFeeInEth",
+          "type": "uint256"
+        },
+        {
+          "name": "_galtSpaceEthStake",
+          "type": "uint256"
+        },
+        {
           "name": "_spaceToken",
           "type": "address"
         },
@@ -1721,20 +1937,6 @@
         {
           "name": "",
           "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "getValidators",
-      "outputs": [
-        {
-          "name": "",
-          "type": "address[]"
         }
       ],
       "payable": false,
@@ -1839,55 +2041,8 @@
           "type": "bytes32"
         }
       ],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "_aId",
-          "type": "bytes32"
-        }
-      ],
-      "name": "getGeohashes",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256[]"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "getApplicationsArray",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bytes32[]"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "_aId",
-          "type": "bytes32"
-        }
-      ],
-      "name": "mintPack",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
+      "payable": true,
+      "stateMutability": "payable",
       "type": "function"
     },
     {
@@ -1900,23 +2055,17 @@
         {
           "name": "_geohashes",
           "type": "uint256[]"
-        }
-      ],
-      "name": "pushGeohashes",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
+        },
         {
-          "name": "_aId",
-          "type": "bytes32"
+          "name": "_neighborsGeohashTokens",
+          "type": "uint256[]"
+        },
+        {
+          "name": "_directions",
+          "type": "bytes2[]"
         }
       ],
-      "name": "swapTokens",
+      "name": "addGeohashesToApplication",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -1932,8 +2081,36 @@
       ],
       "name": "submitApplication",
       "outputs": [],
-      "payable": true,
-      "stateMutability": "payable",
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_aId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "lockApplicationForReview",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_aId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "unlockApplication",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -1944,14 +2121,79 @@
           "type": "bytes32"
         },
         {
-          "name": "_approve",
+          "name": "_credentialsHash",
+          "type": "bytes32"
+        }
+      ],
+      "name": "approveApplication",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_aId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "rejectApplication",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_aId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "revertApplication",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_aId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "claimFee",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_id",
+          "type": "bytes32"
+        },
+        {
+          "name": "_hash",
+          "type": "bytes32"
+        }
+      ],
+      "name": "isCredentialsHashValid",
+      "outputs": [
+        {
+          "name": "",
           "type": "bool"
         }
       ],
-      "name": "validateApplication",
-      "outputs": [],
-      "payable": true,
-      "stateMutability": "payable",
+      "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -1962,12 +2204,8 @@
           "type": "bytes32"
         }
       ],
-      "name": "getPlotApplication",
+      "name": "getApplicationById",
       "outputs": [
-        {
-          "name": "id",
-          "type": "bytes32"
-        },
         {
           "name": "applicant",
           "type": "address"
@@ -1977,20 +2215,24 @@
           "type": "uint256[]"
         },
         {
-          "name": "packageToken",
+          "name": "packageTokenId",
           "type": "uint256"
-        },
-        {
-          "name": "geohashTokens",
-          "type": "uint256[]"
         },
         {
           "name": "credentiaslHash",
           "type": "bytes32"
         },
         {
+          "name": "fee",
+          "type": "uint256"
+        },
+        {
           "name": "status",
           "type": "uint8"
+        },
+        {
+          "name": "feePaid",
+          "type": "bool"
         },
         {
           "name": "precision",
@@ -2029,7 +2271,7 @@
       "type": "function"
     }
   ],
-  "landUtilsAddress": "0xdd2afe8d10b23e6cfe36e60546ea172af41b2e73",
+  "landUtilsAddress": "0x0f6fa57f16d5f7041394096aa94de5ad4bac7f54",
   "landUtilsAbi": [
     {
       "constant": true,
