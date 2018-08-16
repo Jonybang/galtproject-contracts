@@ -143,6 +143,7 @@ contract PlotManager is Initializable, Ownable {
     a.precision = _precision;
 
     applications[_id] = a;
+    spaceToken.mint(address(this), _baseGeohash);
     applications[_id].geohashTokens.push(_baseGeohash);
     applicationsArray.push(_id);
     applicationsByAddresses[msg.sender].push(_id);
