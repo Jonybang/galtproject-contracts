@@ -221,7 +221,7 @@ contract PlotManager is Initializable, Ownable {
       _geohashes[i] = geohashTokenId;
     }
 
-//    splitMerge.addGeohashesToPackage(a.packageTokenId, _geohashes, _neighborsGeohashTokens, _directions);
+    splitMerge.addGeohashesToPackage(a.packageTokenId, _geohashes, _neighborsGeohashTokens, _directions);
   }
 
   function removeGeohashesFromApplication(
