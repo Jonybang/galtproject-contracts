@@ -143,14 +143,14 @@ contract PlotManager is Initializable, Ownable {
     payable
     returns (bytes32)
   {
-    require(_precision > 5, "Precision should be greater than 5");
-    require(_vertices.length >= 3, "Number of vertices should be equal or greater than 3");
-    require(_vertices.length < 51, "Number of vertices should be equal or less than 50");
-    require(msg.value == validationFeeInEth, "Incorrect fee passed in");
-
-    for (uint8 i = 0; i < _vertices.length; i++) {
-      require(_vertices[i] > 0, "Vertex should not be zero");
-    }
+//    require(_precision > 5, "Precision should be greater than 5");
+//    require(_vertices.length >= 3, "Number of vertices should be equal or greater than 3");
+//    require(_vertices.length < 51, "Number of vertices should be equal or less than 50");
+//    require(msg.value == validationFeeInEth, "Incorrect fee passed in");
+//
+//    for (uint8 i = 0; i < _vertices.length; i++) {
+//      require(_vertices[i] > 0, "Vertex should not be zero");
+//    }
 
     Application memory a;
     bytes32 _id = keccak256(abi.encodePacked(_vertices[0], _vertices[1], _credentialsHash));
