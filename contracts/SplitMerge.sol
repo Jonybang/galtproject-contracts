@@ -16,7 +16,7 @@ contract SplitMerge is Initializable, Ownable {
   mapping(uint256 => uint256[]) packageToContour;
 
   mapping(uint256 => uint256[]) public packageToGeohashes;
-  mapping(uint256 => uint256) packageToGeohashesCount;
+  mapping(uint256 => uint256) public packageToGeohashesCount;
   mapping(uint256 => bool) brokenPackages;
 
   uint256[] allPackages;
@@ -25,12 +25,9 @@ contract SplitMerge is Initializable, Ownable {
 
   }
 
-  function initialize(SpaceToken _spaceToken) public isInitializer {
+  function initialize(SpaceToken _spaceToken, PlotManager _plotManager) public isInitializer {
     owner = msg.sender;
     spaceToken = _spaceToken;
-  }
-
-  function setPlotManager(PlotManager _plotManager) public onlyOwner {
     plotManager = _plotManager;
   }
 
@@ -93,7 +90,13 @@ contract SplitMerge is Initializable, Ownable {
     packageToGeohashesCount[_packageToken] += _geohashTokens.length;
   }
 
-  function removeGeohashFromPackageUnsafe(uint256 _packageToken, uint256 _geohashToken) public ownerOrPlotManager {
+  function removeGeohashFromPackageUnsafe(
+    uint256 _packageToken,
+    uint256 _geohashToken
+  )
+    public
+    ownerOrPlotManager
+  {
     require(_geohashToken != 0, "Geohash is 0");
     require(spaceToken.ownerOf(_geohashToken) == address(this), "Geohash owner is not SplitMerge");
 
@@ -101,24 +104,31 @@ contract SplitMerge is Initializable, Ownable {
     geohashToPackage[_geohashToken] = 0;
   }
 
-  function removeGeohashesFromPackage(uint256 _packageToken, uint256[] _geohashTokens, bytes2[] _directions1, bytes2[] _directions2) public {
+  function removeGeohashesFromPackage(
+    uint256 _packageToken,
+    uint256[] _geohashTokens,
+    bytes2[] _directions1,
+    bytes2[] _directions2
+  )
+    public
+  {
     require(_packageToken != 0, "Missing package token");
     require(spaceToken.ownerOf(_packageToken) == msg.sender, "Package owner is not msg.sender");
     require(spaceToken != address(0), "SpaceToken address not set");
 
     for (uint256 i = 0; i < _geohashTokens.length; i++) {
       //TODO: add check for neighbor beside the geohash and the Neighbor belongs to package
-      addGeohashToPackageUnsafe(_packageToken, _geohashTokens[i]);
+      removeGeohashFromPackageUnsafe(_packageToken, _geohashTokens[i]);
     }
 
     packageToGeohashesCount[_packageToken] -= _geohashTokens.length;
   }
 
-  function packageGeohashesCount(uint256 _packageToken) public returns (uint256) {
+  function packageGeohashesCount(uint256 _packageToken) public view returns (uint256) {
     return packageToGeohashesCount[_packageToken];
   }
 
-  function packageGeohashes(uint256 _packageToken) public returns (uint256[]) {
+  function packageGeohashes(uint256 _packageToken) public view returns (uint256[]) {
     return packageToGeohashes[_packageToken];
   }
 

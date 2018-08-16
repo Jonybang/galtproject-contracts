@@ -55,7 +55,7 @@ contract('PlotManager', ([coreTeam, alice, bob, charlie]) => {
 
     this.spaceToken.initialize('SpaceToken', 'SPACE', { from: coreTeam });
     this.plotManager.initialize(ether(6), '24', this.spaceToken.address, this.splitMerge.address, { from: coreTeam });
-    this.splitMerge.initialize(this.spaceToken.address, { from: coreTeam });
+    this.splitMerge.initialize(this.spaceToken.address, this.plotManager.address, { from: coreTeam });
 
     this.spaceToken.addRoleTo(this.plotManager.address, 'minter');
     this.spaceToken.addRoleTo(this.splitMerge.address, 'minter');
@@ -66,7 +66,7 @@ contract('PlotManager', ([coreTeam, alice, bob, charlie]) => {
   });
 
   it('should be initialized successfully', async function() {
-    (await this.plotManager.validationFeeInEth()).toString(10).should.be.a.bignumber.eq(ether(6));
+    (await this.plotManager.applicationFeeInEth()).toString(10).should.be.a.bignumber.eq(ether(6));
   });
 
   describe('#addValidator()', () => {
@@ -269,8 +269,6 @@ contract('PlotManager', ([coreTeam, alice, bob, charlie]) => {
         assert.equal(res.status, 2);
       });
 
-      it('should change status of an application from from rejected to submitted');
-
       it('should reject if status is not new or rejected', async function() {
         let res = await this.plotManagerWeb3.methods.getApplicationById(this.aId).call();
         assert.equal(res.status, 1);
@@ -445,6 +443,41 @@ contract('PlotManager', ([coreTeam, alice, bob, charlie]) => {
         await assertRevert(this.plotManager.rejectApplication(this.aId, { from: bob }));
         const res = await this.plotManagerWeb3.methods.getApplicationById(this.aId).call();
         assert.equal(res.status, ApplicationStatuses.SUBMITTED);
+      });
+    });
+
+    describe('#removeGeohashFromApplication()', () => {
+      beforeEach(async function() {
+        let geohashes = `gbsuv7ztt gbsuv7ztw gbsuv7ztx gbsuv7ztm gbsuv7ztq gbsuv7ztr gbsuv7ztj gbsuv7ztn`;
+        geohashes += ` gbsuv7zq gbsuv7zw gbsuv7zy gbsuv7zm gbsuv7zt gbsuv7zv gbsuv7zk gbsuv7zs gbsuv7zu`;
+        this.geohashes = geohashes.split(' ').map(galt.geohashToGeohash5);
+
+        await this.plotManager.addGeohashesToApplication(this.aId, this.geohashes, [], [], { from: alice });
+      });
+
+      it('should allow owner partially remove geohashes from an application', async function() {
+        const geohashesToRemove = this.geohashes.slice(0, 2);
+        await this.plotManager.removeGeohashesFromApplication(this.aId, geohashesToRemove, [], [], {
+          from: alice
+        });
+        // TODO: finish after fixing splitmerge
+      });
+    });
+
+    describe('#claimValidatorRewardEth()', () => {
+      beforeEach(async function() {
+        await this.plotManager.submitApplication(this.aId, { from: alice });
+        await this.plotManager.addValidator(bob, 'Bob', 'ID', { from: coreTeam });
+        await this.plotManager.lockApplicationForReview(this.aId, { from: bob });
+        await this.plotManager.approveApplication(this.aId, this.credentials, { from: bob });
+      });
+
+      it('should', async function() {
+        const bobInitialBalance = await web3.eth.getBalance(bob);
+        console.log('bobs initial balance', bobInitialBalance);
+        await this.plotManager.claimValidatorRewardEth(this.aId, { from: bob });
+        const bobFinalBalance = await web3.eth.getBalance(bob);
+        console.log('bobs final balance', bobFinalBalance);
       });
     });
   });

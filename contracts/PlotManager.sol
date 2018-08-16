@@ -3,11 +3,14 @@ pragma experimental "v0.5.0";
 
 import "zos-lib/contracts/migrations/Initializable.sol";
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "./SpaceToken.sol";
 import "./SplitMerge.sol";
 
 
 contract PlotManager is Initializable, Ownable {
+  using SafeMath for uint256;
+
   enum ApplicationStatuses {
     NOT_EXISTS,
     NEW,
@@ -18,8 +21,8 @@ contract PlotManager is Initializable, Ownable {
     REVERTED,
     DISASSEMBLED,
     REFUNDED,
-    COMPLETED,
-    CLOSED
+    VALIDATOR_REWARDED,
+    GALTSPACE_REWARDED
   }
 
   event LogApplicationStatusChanged(bytes32 application, ApplicationStatuses status);
@@ -32,8 +35,10 @@ contract PlotManager is Initializable, Ownable {
     bytes32 credentialsHash;
     bytes32 ledgerIdentifier;
     uint256 packageTokenId;
-    uint256 fee;
-    bool feePaid;
+    uint256 validatorRewardEth;
+    uint256 galtSpaceRewardEth;
+    uint256 validatorRewardGalt;
+    uint256 galtSpaceRewardGalt;
     uint8 precision;
     bytes2 country;
     uint256[] vertices;
@@ -46,8 +51,10 @@ contract PlotManager is Initializable, Ownable {
     bool active;
   }
 
-  uint256 public validationFeeInEth;
-  uint256 galtSpaceEthStake;
+  uint256 public applicationFeeInEth;
+  uint256 public applicationFeeInGalt;
+  uint256 public galtSpaceEthShare;
+  uint256 public galtSpaceGaltShare;
 
   mapping(bytes32 => Application) public applications;
   mapping(address => Validator) public validators;
@@ -65,7 +72,7 @@ contract PlotManager is Initializable, Ownable {
 
   function initialize(
     uint256 _validationFeeInEth,
-    uint256 _galtSpaceEthStake,
+    uint256 _galtSpaceEthShare,
     SpaceToken _spaceToken,
     SplitMerge _splitMerge
   )
@@ -75,8 +82,8 @@ contract PlotManager is Initializable, Ownable {
     owner = msg.sender;
     spaceToken = _spaceToken;
     splitMerge = _splitMerge;
-    validationFeeInEth = _validationFeeInEth;
-    galtSpaceEthStake = _galtSpaceEthStake;
+    applicationFeeInEth = _validationFeeInEth;
+    galtSpaceEthShare = _galtSpaceEthShare;
   }
 
   modifier onlyApplicant(bytes32 _aId) {
@@ -146,7 +153,7 @@ contract PlotManager is Initializable, Ownable {
     require(_precision > 5, "Precision should be greater than 5");
     require(_vertices.length >= 3, "Number of vertices should be equal or greater than 3");
     require(_vertices.length < 51, "Number of vertices should be equal or less than 50");
-    require(msg.value == validationFeeInEth, "Incorrect fee passed in");
+    require(msg.value == applicationFeeInEth, "Incorrect fee passed in");
 
     for (uint8 i = 0; i < _vertices.length; i++) {
       require(_vertices[i] > 0, "Vertex should not be zero");
@@ -158,12 +165,19 @@ contract PlotManager is Initializable, Ownable {
     a.status = ApplicationStatuses.NEW;
     a.id = _id;
     a.applicant = msg.sender;
-    a.fee = msg.value;
     a.vertices = _vertices;
     a.country = _country;
     a.credentialsHash = _credentialsHash;
     a.ledgerIdentifier = _ledgerIdentifier;
     a.precision = _precision;
+
+    uint256 validatorRewardEth = galtSpaceEthShare.div(100).mul(msg.value);
+    uint256 galtSpaceRewardEth = msg.value.sub(validatorRewardEth);
+
+    assert(validatorRewardEth.add(galtSpaceRewardEth) == msg.value);
+
+    a.validatorRewardEth = galtSpaceRewardEth;
+    a.galtSpaceRewardEth = galtSpaceRewardEth;
 
     uint256 geohashTokenId = spaceToken.mintGeohash(address(this), _baseGeohash);
     a.packageTokenId = splitMerge.initPackage(geohashTokenId);
@@ -188,14 +202,18 @@ contract PlotManager is Initializable, Ownable {
     onlyApplicant(_aId)
   {
     Application storage a = applications[_aId];
-    require(a.status == ApplicationStatuses.NEW || a.status == ApplicationStatuses.REJECTED,
-      "Application status should be NEW for this operation.");
+    require(
+      a.status == ApplicationStatuses.NEW || a.status == ApplicationStatuses.REJECTED,
+      "Application status should be NEW for this operation."
+    );
 
     for (uint8 i = 0; i < _geohashes.length; i++) {
       uint256 geohashTokenId = _geohashes[i] ^ uint256(spaceToken.GEOHASH_MASK());
       if (spaceToken.exists(geohashTokenId)) {
-        require(spaceToken.ownerOf(geohashTokenId) == address(this),
-          "Existing geohash token should belongs to PlotManager contract");
+        require(
+          spaceToken.ownerOf(geohashTokenId) == address(this),
+          "Existing geohash token should belongs to PlotManager contract"
+        );
       } else {
         spaceToken.mintGeohash(address(this), _geohashes[i]);
       }
@@ -204,6 +222,33 @@ contract PlotManager is Initializable, Ownable {
     }
 
     splitMerge.addGeohashesToPackage(a.packageTokenId, _geohashes, _neighborsGeohashTokens, _directions);
+  }
+
+  function removeGeohashesFromApplication(
+    bytes32 _aId,
+    uint256[] _geohashes,
+    bytes2[] _directions1,
+    bytes2[] _directions2
+  )
+    public
+    onlyApplicant(_aId)
+  {
+    Application storage a = applications[_aId];
+    require(
+      a.status == ApplicationStatuses.NEW || a.status == ApplicationStatuses.REJECTED,
+      "Application status should be NEW for this operation."
+    );
+
+    for (uint8 i = 0; i < _geohashes.length; i++) {
+      uint256 geohashTokenId = _geohashes[i] ^ uint256(spaceToken.GEOHASH_MASK());
+
+      require(spaceToken.ownerOf(geohashTokenId) == address(splitMerge), "Existing geohash token should belongs to PlotManager contract");
+
+      _geohashes[i] = geohashTokenId;
+    }
+
+    // TODO: implement directions
+    splitMerge.removeGeohashesFromPackage(a.packageTokenId, _geohashes, _directions1, _directions2);
   }
 
   function submitApplication(bytes32 _aId) public onlyApplicant(_aId) {
@@ -256,17 +301,18 @@ contract PlotManager is Initializable, Ownable {
     emit LogApplicationStatusChanged(_aId, ApplicationStatuses.REVERTED);
   }
 
-  function claimFee(bytes32 _aId) public onlyValidator {
+  function claimValidatorRewardEth(bytes32 _aId) public onlyValidator {
     Application storage a = applications[_aId];
 
     require(
       a.status == ApplicationStatuses.APPROVED || a.status == ApplicationStatuses.REJECTED,
       "Application status should be ether APPROVED or REJECTED");
-    require(a.feePaid == false, "Fee already paid");
+    require(a.validatorRewardEth > 0, "Reward in ETH is 0");
 
-    a.feePaid = true;
+    a.status = ApplicationStatuses.VALIDATOR_REWARDED;
 
-    msg.sender.transfer(a.fee);
+    // TODO: emit event
+    msg.sender.transfer(a.validatorRewardEth);
   }
 
   function isCredentialsHashValid(
@@ -290,9 +336,7 @@ contract PlotManager is Initializable, Ownable {
       uint256[] vertices,
       uint256 packageTokenId,
       bytes32 credentiaslHash,
-      uint256 fee,
       ApplicationStatuses status,
-      bool feePaid,
       uint8 precision,
       bytes2 country,
       bytes32 ledgerIdentifier
@@ -307,16 +351,40 @@ contract PlotManager is Initializable, Ownable {
       m.vertices,
       m.packageTokenId,
       m.credentialsHash,
-      m.fee,
       m.status,
-      m.feePaid,
       m.precision,
       m.country,
       m.ledgerIdentifier
     );
   }
 
-  function getApplicationsByAddress(address applicant) external returns (bytes32[]) {
+  function getApplicationFinanceById(
+    bytes32 _id
+  )
+    public
+    view
+    returns (
+      ApplicationStatuses status,
+      uint256 validatorRewardEth,
+      uint256 galtSpaceRewardEth,
+      uint256 validatorRewardGalt,
+      uint256 galtSpaceRewardGalt
+    )
+  {
+    require(applications[_id].status != ApplicationStatuses.NOT_EXISTS, "Application doesn't exist");
+
+    Application storage m = applications[_id];
+
+    return (
+      m.status,
+      m.validatorRewardEth,
+      m.galtSpaceRewardEth,
+      m.validatorRewardGalt,
+      m.galtSpaceRewardGalt
+    );
+  }
+
+  function getApplicationsByAddress(address applicant) external view returns (bytes32[]) {
     return applicationsByAddresses[applicant];
   }
 }
