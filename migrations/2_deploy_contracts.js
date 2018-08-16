@@ -46,8 +46,7 @@ module.exports = async function(deployer, network, accounts) {
     await spaceToken.addRoleTo(splitMerge.address, 'minter');
     await spaceToken.addRoleTo(splitMerge.address, 'operator');
 
-    await splitMerge.initialize(spaceToken.address, { from: coreTeam });
-    await splitMerge.setPlotManager(plotManager.address, { from: coreTeam });
+    await splitMerge.initialize(spaceToken.address, plotManager.address, { from: coreTeam });
 
     await plotManager.initialize(Web3.utils.toWei('0.1', 'ether'), '25', spaceToken.address, splitMerge.address, {
       from: coreTeam

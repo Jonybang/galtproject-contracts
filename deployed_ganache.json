@@ -1,5 +1,5 @@
 {
-  "galtTokenAddress": "0xc9b932a47be35e09e38f5a18b067e21fdac4b5c9",
+  "galtTokenAddress": "0xf9e83e87bead6717b659b76f6f3fae07cd888513",
   "galtTokenAbi": [
     {
       "constant": true,
@@ -423,7 +423,7 @@
       "type": "event"
     }
   ],
-  "spaceTokenAddress": "0x361a920b1fde1e6fe446db2b806f12cec6dc847c",
+  "spaceTokenAddress": "0x0dd74251c0407696c87b0ec5000d29ef816d26a5",
   "spaceTokenAbi": [
     {
       "constant": true,
@@ -1323,7 +1323,7 @@
       "type": "function"
     }
   ],
-  "splitMergeAddress": "0xbcea02b50d81576163bac80de3a40b02990df9d0",
+  "splitMergeAddress": "0xbc3fe4203c552d65e4cec177cccc0b272125c4a6",
   "splitMergeAbi": [
     {
       "constant": true,
@@ -1375,6 +1375,25 @@
         }
       ],
       "name": "packageToGeohashes",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "packageToGeohashesCount",
       "outputs": [
         {
           "name": "",
@@ -1457,23 +1476,13 @@
         {
           "name": "_spaceToken",
           "type": "address"
-        }
-      ],
-      "name": "initialize",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
+        },
         {
           "name": "_plotManager",
           "type": "address"
         }
       ],
-      "name": "setPlotManager",
+      "name": "initialize",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -1587,7 +1596,7 @@
       "type": "function"
     },
     {
-      "constant": false,
+      "constant": true,
       "inputs": [
         {
           "name": "_packageToken",
@@ -1602,11 +1611,11 @@
         }
       ],
       "payable": false,
-      "stateMutability": "nonpayable",
+      "stateMutability": "view",
       "type": "function"
     },
     {
-      "constant": false,
+      "constant": true,
       "inputs": [
         {
           "name": "_packageToken",
@@ -1621,12 +1630,26 @@
         }
       ],
       "payable": false,
-      "stateMutability": "nonpayable",
+      "stateMutability": "view",
       "type": "function"
     }
   ],
-  "plotManagerAddress": "0x1ad3023a86b4ebf259499abd3aebeca7615d6609",
+  "plotManagerAddress": "0xdd988058a86e6e6575849cd472227ca44ac7df28",
   "plotManagerAbi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "galtSpaceEthShare",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
     {
       "constant": true,
       "inputs": [],
@@ -1658,7 +1681,7 @@
     {
       "constant": true,
       "inputs": [],
-      "name": "validationFeeInEth",
+      "name": "applicationFeeInGalt",
       "outputs": [
         {
           "name": "",
@@ -1704,12 +1727,20 @@
           "type": "uint256"
         },
         {
-          "name": "fee",
+          "name": "validatorRewardEth",
           "type": "uint256"
         },
         {
-          "name": "feePaid",
-          "type": "bool"
+          "name": "galtSpaceRewardEth",
+          "type": "uint256"
+        },
+        {
+          "name": "validatorRewardGalt",
+          "type": "uint256"
+        },
+        {
+          "name": "galtSpaceRewardGalt",
+          "type": "uint256"
         },
         {
           "name": "precision",
@@ -1782,6 +1813,34 @@
         {
           "name": "",
           "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "applicationFeeInEth",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "galtSpaceGaltShare",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
         }
       ],
       "payable": false,
@@ -1906,7 +1965,7 @@
           "type": "uint256"
         },
         {
-          "name": "_galtSpaceEthStake",
+          "name": "_galtSpaceEthShare",
           "type": "uint256"
         },
         {
@@ -2077,6 +2136,32 @@
         {
           "name": "_aId",
           "type": "bytes32"
+        },
+        {
+          "name": "_geohashes",
+          "type": "uint256[]"
+        },
+        {
+          "name": "_directions1",
+          "type": "bytes2[]"
+        },
+        {
+          "name": "_directions2",
+          "type": "bytes2[]"
+        }
+      ],
+      "name": "removeGeohashesFromApplication",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_aId",
+          "type": "bytes32"
         }
       ],
       "name": "submitApplication",
@@ -2167,7 +2252,7 @@
           "type": "bytes32"
         }
       ],
-      "name": "claimFee",
+      "name": "claimValidatorRewardEth",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -2223,16 +2308,8 @@
           "type": "bytes32"
         },
         {
-          "name": "fee",
-          "type": "uint256"
-        },
-        {
           "name": "status",
           "type": "uint8"
-        },
-        {
-          "name": "feePaid",
-          "type": "bool"
         },
         {
           "name": "precision",
@@ -2252,7 +2329,42 @@
       "type": "function"
     },
     {
-      "constant": false,
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_id",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getApplicationFinanceById",
+      "outputs": [
+        {
+          "name": "status",
+          "type": "uint8"
+        },
+        {
+          "name": "validatorRewardEth",
+          "type": "uint256"
+        },
+        {
+          "name": "galtSpaceRewardEth",
+          "type": "uint256"
+        },
+        {
+          "name": "validatorRewardGalt",
+          "type": "uint256"
+        },
+        {
+          "name": "galtSpaceRewardGalt",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
       "inputs": [
         {
           "name": "applicant",
@@ -2267,11 +2379,11 @@
         }
       ],
       "payable": false,
-      "stateMutability": "nonpayable",
+      "stateMutability": "view",
       "type": "function"
     }
   ],
-  "landUtilsAddress": "0xec8420768b90aae554d18148ab222888820984ef",
+  "landUtilsAddress": "0x77ae464026909b619cd89bcd4b5bc81486d6ccf1",
   "landUtilsAbi": [
     {
       "constant": true,
