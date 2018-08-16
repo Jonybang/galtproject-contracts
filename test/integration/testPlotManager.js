@@ -182,13 +182,28 @@ contract('PlotManager', ([coreTeam, alice, bob, charlie]) => {
     });
 
     describe('#addGeohashesToApplication', () => {
-      it('should add a list of geohashes', async function() {
-        let geohashes = `gbsuv7ztt gbsuv7ztw gbsuv7ztx gbsuv7ztm gbsuv7ztq gbsuv7ztr gbsuv7ztj gbsuv7ztn`;
-        geohashes += ` gbsuv7zq gbsuv7zw gbsuv7zy gbsuv7zm gbsuv7zt gbsuv7zv gbsuv7zk gbsuv7zs gbsuv7zu`;
-        geohashes = geohashes.split(' ').map(galt.geohashToGeohash5);
+      it.only('should add a list of geohashes', async function() {
 
         // TODO: pass neighbours and directions
-        await this.plotManager.addGeohashesToApplication(this.aId, geohashes, [], [], { from: alice });
+        await this.plotManager.addGeohashesToApplication(
+            this.aId,
+            ["30860094607389", "30860094607390", "964377953677", "964377953680", "964377953682", "964377953688", "964377953681", "964377953683", "964377953689", "964377953684", "964377953686", "964377953692", "964377953685", "964377953687", "964377953693", "964377953728", "964377953730", "964377953736", "964377953738", "964377953729"],
+            ["30860094607383", "30860094607388", "964377953671", "30860094517439", "964377953671", "964377953677", "964377953680", "964377953682", "964377953688", "964377953681", "964377953683", "964377953689", "964377953684", "964377953686", "964377953692", "964377953685", "964377953731", "964377953737", "964377953739", "964377953731"],
+            ["0x73", "0x73", "0x77", "0x73", "0x73", "0x73", "0x73", "0x73", "0x73", "0x73", "0x73", "0x73", "0x73", "0x73", "0x73", "0x73", "0x6e", "0x6e", "0x6e", "0x65"],
+            { from: alice }
+        );
+
+        await this.plotManager.addGeohashesToApplication(
+            this.aId,
+            ["30860094520043", "30860094520046", "30860094520047", "30860094520058", "30860094607365", "30860094607376", "30860094607377", "30860094607380", "30860094607381", "30860094607424", "30860094607425", "30860094607428", "30860094607378", "30860094607379", "30860094607382", "30860094607383", "30860094607426", "30860094607427", "30860094607385", "30860094607388"],
+            ["30860094520041", "30860094520044", "30860094520045", "30860094520056", "30860094519983", "30860094519994", "30860094519995", "30860094519998", "30860094519999", "30860094520042", "30860094520043", "30860094520046", "30860094607376", "30860094607377", "30860094607380", "30860094607381", "30860094607424", "30860094607425", "30860094607379", "30860094607382"],
+            ["0x73", "0x73", "0x73", "0x73", "0x73", "0x73", "0x73", "0x73", "0x73", "0x73", "0x73", "0x73", "0x73", "0x73", "0x73", "0x73", "0x73", "0x73", "0x73", "0x73"],
+            { from: alice }
+        );
+
+        // geohashes = `gbsuv7zq gbsuv7zw gbsuv7zy gbsuv7zm gbsuv7zt gbsuv7zv gbsuv7zk gbsuv7zs gbsuv7zu`;
+        // geohashes = geohashes.split(' ').map(galt.geohashToGeohash5);
+        // await this.plotManager.addGeohashesToApplication(this.aId, geohashes, [], [], { from: alice });
       });
 
       it('should re-use geohash space tokens if they belong to PlotManager', async function() {
