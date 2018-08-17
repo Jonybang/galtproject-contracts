@@ -48,7 +48,7 @@ module.exports = async function(deployer, network, accounts) {
 
     await splitMerge.initialize(spaceToken.address, plotManager.address, { from: coreTeam });
 
-    await plotManager.initialize(Web3.utils.toWei('0.1', 'ether'), '25', spaceToken.address, splitMerge.address, {
+    await plotManager.initialize(Web3.utils.toWei('0.1', 'ether'), '25', coreTeam, spaceToken.address, splitMerge.address, {
       from: coreTeam
     });
 

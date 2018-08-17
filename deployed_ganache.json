@@ -1,5 +1,5 @@
 {
-  "galtTokenAddress": "0x695890208186cb85c5ddbfbc6c5a3dc97228b0bb",
+  "galtTokenAddress": "0xdd0b20908f38a0320c3c9d7efa3ab0e3b2dc3e80",
   "galtTokenAbi": [
     {
       "constant": true,
@@ -423,7 +423,7 @@
       "type": "event"
     }
   ],
-  "spaceTokenAddress": "0xb9f2f6bbb0acd4bcfa3258fc8ae96f9c823df9d6",
+  "spaceTokenAddress": "0xaaa9be1cfe87be13b63907e93f72b784b1032cb2",
   "spaceTokenAbi": [
     {
       "constant": true,
@@ -1342,7 +1342,7 @@
       "type": "function"
     }
   ],
-  "splitMergeAddress": "0x49a5a3a444c86f26fded6f79a6aba34d2860c72f",
+  "splitMergeAddress": "0xa9e18fa02f05ca473df6145a1ab39528c66f69dd",
   "splitMergeAbi": [
     {
       "constant": true,
@@ -1530,7 +1530,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_packageToken",
+          "name": "_packageTokenId",
           "type": "uint256"
         },
         {
@@ -1542,6 +1542,25 @@
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_packageTokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getPackageContour",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -1653,7 +1672,7 @@
       "type": "function"
     }
   ],
-  "plotManagerAddress": "0x5aff56e8188a1e69cb95b4d82ae6ec69d104a603",
+  "plotManagerAddress": "0x606bbfedbc1eb77b389c251e26a81d4376e835b6",
   "plotManagerAbi": [
     {
       "constant": true,
@@ -2011,6 +2030,10 @@
           "type": "uint256"
         },
         {
+          "name": "_galtSpaceRewardsAddress",
+          "type": "address"
+        },
+        {
           "name": "_spaceToken",
           "type": "address"
         },
@@ -2111,7 +2134,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_vertices",
+          "name": "_packageCountour",
           "type": "uint256[]"
         },
         {
@@ -2301,6 +2324,20 @@
       "type": "function"
     },
     {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_aId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "claimGaltSpaceRewardEth",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "constant": true,
       "inputs": [
         {
@@ -2340,10 +2377,6 @@
         {
           "name": "validator",
           "type": "address"
-        },
-        {
-          "name": "vertices",
-          "type": "uint256[]"
         },
         {
           "name": "packageTokenId",
@@ -2462,7 +2495,7 @@
       "type": "function"
     }
   ],
-  "landUtilsAddress": "0x2c0d8f0b29fcd32ea3cd11eadaf9fc8936326ed4",
+  "landUtilsAddress": "0x0ac08e930ee18082838881fc58c977cec952f993",
   "landUtilsAbi": [
     {
       "constant": true,
