@@ -6,7 +6,7 @@ const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 const chaiBigNumber = require('chai-bignumber')(Web3.utils.BN);
 const galt = require('@galtproject/utils');
-const { ether, assertRevert } = require('../helpers');
+const { ether, assertRevert, zeroAddress } = require('../helpers');
 
 const web3 = new Web3(PlotManager.web3.currentProvider);
 const { BN } = Web3.utils;
@@ -420,6 +420,7 @@ contract('PlotManager', ([coreTeam, alice, bob, charlie]) => {
         await this.plotManager.lockApplicationForReview(this.aId, { from: bob });
         const res = await this.plotManagerWeb3.methods.getApplicationById(this.aId).call();
         assert.equal(res.status, ApplicationStatuses.CONSIDERATION);
+        assert.equal(res.validator.toLowerCase(), bob);
       });
 
       it('should deny validator to lock an application which is already on consideration', async function() {
@@ -428,6 +429,32 @@ contract('PlotManager', ([coreTeam, alice, bob, charlie]) => {
         assert.equal(res.status, ApplicationStatuses.CONSIDERATION);
 
         await assertRevert(this.plotManager.lockApplicationForReview(this.aId, { from: charlie }));
+      });
+
+      it('should push an application id to the validators list for caching', async function() {
+        // lock first
+        await this.plotManager.lockApplicationForReview(this.aId, { from: bob });
+
+        // submit second
+        let res = await this.plotManager.applyForPlotOwnership(
+          this.vertices,
+          galt.geohashToGeohash5('sezu07'),
+          this.credentials,
+          this.ledgerIdentifier,
+          web3.utils.asciiToHex('MN'),
+          7,
+          { from: alice, gas: 1000000, value: ether(6) }
+        );
+        const a2Id = res.logs[0].args.id;
+        await this.plotManager.submitApplication(a2Id, { from: alice });
+
+        // lock second
+        await this.plotManager.lockApplicationForReview(a2Id, { from: bob });
+
+        res = await this.plotManager.getApplicationsByValidator(bob);
+        assert.equal(res.length, 2);
+        assert.equal(res[0], this.aId);
+        assert.equal(res[1], a2Id);
       });
 
       it('should deny validator to lock an application which is new', async function() {
@@ -444,6 +471,7 @@ contract('PlotManager', ([coreTeam, alice, bob, charlie]) => {
         await assertRevert(this.plotManager.lockApplicationForReview(a2Id, { from: charlie }));
         res = await this.plotManagerWeb3.methods.getApplicationById(this.aId).call();
         assert.equal(res.status, 1);
+        assert.equal(res.validator.toLowerCase(), zeroAddress);
       });
 
       it('should deny non-validator to lock an application', async function() {
@@ -464,12 +492,14 @@ contract('PlotManager', ([coreTeam, alice, bob, charlie]) => {
         await this.plotManager.unlockApplication(this.aId, { from: coreTeam });
         const res = await this.plotManagerWeb3.methods.getApplicationById(this.aId).call();
         assert.equal(res.status, 2);
+        assert.equal(res.validator.toLowerCase(), zeroAddress);
       });
 
       it('should deny non-owner to unlock an application under consideration', async function() {
         await assertRevert(this.plotManager.unlockApplication(this.aId, { from: charlie }));
         const res = await this.plotManagerWeb3.methods.getApplicationById(this.aId).call();
         assert.equal(res.status, ApplicationStatuses.CONSIDERATION);
+        assert.equal(res.validator.toLowerCase(), bob);
       });
     });
 
@@ -484,6 +514,13 @@ contract('PlotManager', ([coreTeam, alice, bob, charlie]) => {
         await this.plotManager.approveApplication(this.aId, this.credentials, { from: bob });
         const res = await this.plotManagerWeb3.methods.getApplicationById(this.aId).call();
         assert.equal(res.status, ApplicationStatuses.APPROVED);
+      });
+
+      it('should transfer package to an applicant', async function() {
+        const packId = '0x0200000000000000000000000000000000000000000000000000000000000000';
+        await this.plotManager.approveApplication(this.aId, this.credentials, { from: bob });
+        const res = await this.spaceToken.ownerOf(packId);
+        assert.equal(res, alice);
       });
 
       it('should deny a validator approve application if hash doesnt match', async function() {
@@ -586,12 +623,25 @@ contract('PlotManager', ([coreTeam, alice, bob, charlie]) => {
         await this.plotManager.approveApplication(this.aId, this.credentials, { from: bob });
       });
 
-      it('should', async function() {
-        const bobInitialBalance = await web3.eth.getBalance(bob);
-        console.log('bobs initial balance', bobInitialBalance);
+      it('should allow validator claim reward', async function() {
+        const bobsInitialBalance = new BN(await web3.eth.getBalance(bob));
         await this.plotManager.claimValidatorRewardEth(this.aId, { from: bob });
-        const bobFinalBalance = await web3.eth.getBalance(bob);
-        console.log('bobs final balance', bobFinalBalance);
+        const bobsFinalBalance = new BN(await web3.eth.getBalance(bob));
+
+        // bobs fee is around (100 - 24) / 100 * 6 ether = 4560000000000000000 wei
+        // assume that the commission paid by bob isn't greater than 0.1 ether
+        assert(
+          bobsInitialBalance
+            .add(new BN('4560000000000000000'))
+            .sub(new BN(ether(0.1)))
+            .lt(bobsFinalBalance)
+        );
+        assert(
+          bobsInitialBalance
+            .add(new BN('4560000000000000000'))
+            .add(new BN(ether(0.1)))
+            .gt(bobsFinalBalance)
+        );
       });
     });
   });
