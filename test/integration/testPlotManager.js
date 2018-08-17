@@ -40,7 +40,7 @@ Object.freeze(ApplicationStatuses);
  * Alice is an applicant
  * Bob is a validator
  */
-contract('PlotManager', ([coreTeam, alice, bob, charlie]) => {
+contract('PlotManager', ([coreTeam, galtSpaceOrg, alice, bob, charlie]) => {
   beforeEach(async function() {
     this.initVertices = ['qwerqwerqwer', 'ssdfssdfssdf', 'zxcvzxcvzxcv'];
     this.initLedgerIdentifier = 'шц50023中222ائِيل';
@@ -54,7 +54,9 @@ contract('PlotManager', ([coreTeam, alice, bob, charlie]) => {
     this.splitMerge = await SplitMerge.new({ from: coreTeam });
 
     this.spaceToken.initialize('SpaceToken', 'SPACE', { from: coreTeam });
-    this.plotManager.initialize(ether(6), '24', this.spaceToken.address, this.splitMerge.address, { from: coreTeam });
+    this.plotManager.initialize(ether(6), '24', galtSpaceOrg, this.spaceToken.address, this.splitMerge.address, {
+      from: coreTeam
+    });
     this.splitMerge.initialize(this.spaceToken.address, this.plotManager.address, { from: coreTeam });
 
     this.spaceToken.addRoleTo(this.plotManager.address, 'minter');
@@ -86,6 +88,16 @@ contract('PlotManager', ([coreTeam, alice, bob, charlie]) => {
 
     it('should deny any other person than owner to remove validators', async function() {
       await assertRevert(this.plotManager.removeValidator(alice, { from: alice }));
+    });
+  });
+
+  describe('#isValidator()', () => {
+    it('return true if validator is active', async function() {
+      assert(!(await this.plotManagerWeb3.methods.isValidator(alice).call()));
+      await this.plotManager.addValidator(alice, 'Alice', 'IN', { from: coreTeam });
+      assert(await this.plotManagerWeb3.methods.isValidator(alice).call());
+      await this.plotManager.removeValidator(alice, { from: coreTeam });
+      assert(!(await this.plotManagerWeb3.methods.isValidator(alice).call()));
     });
   });
 
@@ -597,7 +609,7 @@ contract('PlotManager', ([coreTeam, alice, bob, charlie]) => {
       });
     });
 
-    describe('#removeGeohashFromApplication()', () => {
+    describe.only('#removeGeohashFromApplication()', () => {
       beforeEach(async function() {
         let geohashes = `gbsuv7ztt gbsuv7ztw gbsuv7ztx gbsuv7ztm gbsuv7ztq gbsuv7ztr gbsuv7ztj gbsuv7ztn`;
         geohashes += ` gbsuv7zq gbsuv7zw gbsuv7zy gbsuv7zm gbsuv7zt gbsuv7zv gbsuv7zk gbsuv7zs gbsuv7zu`;
@@ -608,6 +620,8 @@ contract('PlotManager', ([coreTeam, alice, bob, charlie]) => {
 
       it('should allow owner partially remove geohashes from an application', async function() {
         const geohashesToRemove = this.geohashes.slice(0, 2);
+        let res = await this.spaceToken.ownerOf(galt.geohashToTokenId(geohashesToRemove[0]));
+        console.log('res', res);
         await this.plotManager.removeGeohashesFromApplication(this.aId, geohashesToRemove, [], [], {
           from: alice
         });
@@ -642,6 +656,41 @@ contract('PlotManager', ([coreTeam, alice, bob, charlie]) => {
             .add(new BN(ether(0.1)))
             .gt(bobsFinalBalance)
         );
+      });
+    });
+
+    describe('#claimGaltSpaceRewardEth()', () => {
+      beforeEach(async function() {
+        await this.plotManager.submitApplication(this.aId, { from: alice });
+        await this.plotManager.addValidator(bob, 'Bob', 'ID', { from: coreTeam });
+        await this.plotManager.lockApplicationForReview(this.aId, { from: bob });
+        await this.plotManager.approveApplication(this.aId, this.credentials, { from: bob });
+        await this.plotManager.claimValidatorRewardEth(this.aId, { from: bob });
+      });
+
+      it('should allow validator claim reward', async function() {
+        const plotManagerInitialBalance = new BN(await web3.eth.getBalance(this.plotManager.address));
+        const galtSpaceOrgInitialBalance = new BN(await web3.eth.getBalance(galtSpaceOrg));
+        await this.plotManager.claimGaltSpaceRewardEth(this.aId, { from: galtSpaceOrg });
+        const galtSpaceOrgFinalBalance = new BN(await web3.eth.getBalance(galtSpaceOrg));
+        const plotManagerFinalBalance = new BN(await web3.eth.getBalance(this.plotManager.address));
+
+        // galtSpaceOrg fee is around 24 / 100 * 6 ether = 1440000000000000000 wei
+        // assume that the commission paid by bob isn't greater than 0.1 ether
+        assert(
+          galtSpaceOrgInitialBalance
+            .add(new BN('1440000000000000000'))
+            .sub(new BN(ether(0.1)))
+            .lt(galtSpaceOrgFinalBalance)
+        );
+        assert(
+          galtSpaceOrgInitialBalance
+            .add(new BN('1440000000000000000'))
+            .add(new BN(ether(0.1)))
+            .gt(galtSpaceOrgFinalBalance)
+        );
+        assert(plotManagerInitialBalance.eq(new BN('1440000000000000000')));
+        assert(plotManagerFinalBalance.eq(new BN('0')));
       });
     });
   });
