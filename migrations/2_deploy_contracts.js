@@ -4,6 +4,7 @@ const LandUtils = artifacts.require('./LandUtils');
 const PlotManager = artifacts.require('./PlotManager');
 const SplitMerge = artifacts.require('./SplitMerge');
 const Web3 = require('web3');
+const galt = require('@galtproject/utils');
 // const AdminUpgradeabilityProxy = artifacts.require('zos-lib/contracts/upgradeability/AdminUpgradeabilityProxy.sol');
 
 const fs = require('fs');
@@ -16,6 +17,8 @@ module.exports = async function(deployer, network, accounts) {
 
   deployer.then(async () => {
     const coreTeam = accounts[0];
+    const alice = accounts[1];
+      const bob = accounts[2];
     // const proxiesAdmin = accounts[1];
 
     // Deploy contracts...
@@ -61,12 +64,30 @@ module.exports = async function(deployer, network, accounts) {
 
     await landUtils.initialize({ from: coreTeam });
 
+    const jony = '0xf0430bbb78c3c359c22d4913484081a563b86170';
     await plotManager.addValidator(
-      '0xf0430bbb78c3c359c22d4913484081a563b86170',
+        bob,
       Web3.utils.utf8ToHex('Jonybang'),
       Web3.utils.utf8ToHex('RU'),
       { from: coreTeam }
     );
+
+    const baseGeohash = galt.geohashToGeohash5('sezu06');
+    const res = await plotManager.applyForPlotOwnership(
+      [baseGeohash, baseGeohash, baseGeohash, baseGeohash],
+      baseGeohash,
+        Web3.utils.sha3('111'),
+        Web3.utils.utf8ToHex('111'),
+        Web3.utils.asciiToHex('MN'),
+      7,
+      { from: alice, gas: 1000000, value: Web3.utils.toWei('0.1', 'ether') }
+    );
+
+    const aId = res.logs[0].args.id;
+
+    await plotManager.submitApplication(aId, { from: alice });
+    await plotManager.lockApplicationForReview(aId, { from: bob });
+    await plotManager.approveApplication(aId, Web3.utils.sha3('111'), { from: bob });
 
     await new Promise(resolve => {
       fs.writeFile(
