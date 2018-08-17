@@ -65,6 +65,12 @@ module.exports = async function(deployer, network, accounts) {
     await landUtils.initialize({ from: coreTeam });
 
     const jony = '0xf0430bbb78c3c359c22d4913484081a563b86170';
+      await plotManager.addValidator(
+          jony,
+          Web3.utils.utf8ToHex('Jonybang'),
+          Web3.utils.utf8ToHex('RU'),
+          { from: coreTeam }
+      );
     await plotManager.addValidator(
         bob,
       Web3.utils.utf8ToHex('Jonybang'),
