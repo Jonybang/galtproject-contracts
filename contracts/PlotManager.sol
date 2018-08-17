@@ -301,7 +301,7 @@ contract PlotManager is Initializable, Ownable {
 
     a.status = ApplicationStatuses.APPROVED;
 
-//    spaceToken.transferFrom(address(this), a.applicant, a.packageTokenId);
+    spaceToken.transferFrom(address(this), a.applicant, a.packageTokenId);
 
     emit LogApplicationStatusChanged(_aId, ApplicationStatuses.APPROVED);
   }
