@@ -71,29 +71,29 @@ module.exports = async function(deployer, network, accounts) {
           Web3.utils.utf8ToHex('RU'),
           { from: coreTeam }
       );
-    await plotManager.addValidator(
-        bob,
-      Web3.utils.utf8ToHex('Jonybang'),
-      Web3.utils.utf8ToHex('RU'),
-      { from: coreTeam }
-    );
-
-    const baseGeohash = galt.geohashToGeohash5('sezu06');
-    const res = await plotManager.applyForPlotOwnership(
-      [baseGeohash, baseGeohash, baseGeohash, baseGeohash],
-      baseGeohash,
-        Web3.utils.sha3('111'),
-        Web3.utils.utf8ToHex('111'),
-        Web3.utils.asciiToHex('MN'),
-      7,
-      { from: alice, gas: 1000000, value: Web3.utils.toWei('0.1', 'ether') }
-    );
-
-    const aId = res.logs[0].args.id;
-
-    await plotManager.submitApplication(aId, { from: alice });
-    await plotManager.lockApplicationForReview(aId, { from: bob });
-    await plotManager.approveApplication(aId, Web3.utils.sha3('111'), { from: bob });
+    // await plotManager.addValidator(
+    //     bob,
+    //   Web3.utils.utf8ToHex('Jonybang'),
+    //   Web3.utils.utf8ToHex('RU'),
+    //   { from: coreTeam }
+    // );
+    //
+    // const baseGeohash = galt.geohashToGeohash5('sezu06');
+    // const res = await plotManager.applyForPlotOwnership(
+    //   [baseGeohash, baseGeohash, baseGeohash, baseGeohash],
+    //   baseGeohash,
+    //     Web3.utils.sha3('111'),
+    //     Web3.utils.utf8ToHex('111'),
+    //     Web3.utils.asciiToHex('MN'),
+    //   7,
+    //   { from: alice, gas: 1000000, value: Web3.utils.toWei('0.1', 'ether') }
+    // );
+    //
+    // const aId = res.logs[0].args.id;
+    //
+    // await plotManager.submitApplication(aId, { from: alice });
+    // await plotManager.lockApplicationForReview(aId, { from: bob });
+    // await plotManager.approveApplication(aId, Web3.utils.sha3('111'), { from: bob });
 
     await new Promise(resolve => {
       fs.writeFile(
