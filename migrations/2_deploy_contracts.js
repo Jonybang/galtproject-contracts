@@ -94,6 +94,9 @@ module.exports = async function(deployer, network, accounts) {
     // await plotManager.submitApplication(aId, { from: alice });
     // await plotManager.lockApplicationForReview(aId, { from: bob });
     // await plotManager.approveApplication(aId, Web3.utils.sha3('111'), { from: bob });
+    //
+    // await spaceToken.transferFrom(alice, bob, aId, { from: alice });
+    // console.log('aId', aId);
 
     await new Promise(resolve => {
       fs.writeFile(
