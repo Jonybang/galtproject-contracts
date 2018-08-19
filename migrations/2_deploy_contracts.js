@@ -91,12 +91,15 @@ module.exports = async function(deployer, network, accounts) {
     //
     // const aId = res.logs[0].args.id;
     //
+    // const application = await plotManager.getApplicationById(aId);
+    //
     // await plotManager.submitApplication(aId, { from: alice });
     // await plotManager.lockApplicationForReview(aId, { from: bob });
     // await plotManager.approveApplication(aId, Web3.utils.sha3('111'), { from: bob });
     //
-    // await spaceToken.transferFrom(alice, bob, aId, { from: alice });
-    // console.log('aId', aId);
+    // const packageTokenId = application[2].toString(10);
+    // console.log('application.packageTokenId', packageTokenId);
+    // await spaceToken.transferFrom(alice, bob, packageTokenId, { from: alice });
 
     await new Promise(resolve => {
       fs.writeFile(
