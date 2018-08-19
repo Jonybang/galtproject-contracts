@@ -108,9 +108,9 @@ contract PlotManager is Initializable, Ownable {
     require(a.applicant == msg.sender || a.validator == msg.sender, "Not valid sender");
     require(splitMerge != address(0), "SplitMerge address not set");
 
-//    if(a.validator == msg.sender) {
-//      require(isValidator(msg.sender), "Not active validator");
-//    }
+    if(a.validator == msg.sender) {
+      require(isValidator(msg.sender), "Not active validator");
+    }
 
     _;
   }
@@ -259,13 +259,13 @@ contract PlotManager is Initializable, Ownable {
     bytes2[] _directions2
   )
     public
-    onlyApplicantOrValidator(_aId)
+//    onlyApplicantOrValidator(_aId)
   {
     Application storage a = applications[_aId];
-    require(
-      a.status == ApplicationStatuses.NEW || a.status == ApplicationStatuses.REJECTED,
-      "Application status should be NEW or REJECTED for this operation."
-    );
+//    require(
+//      a.status == ApplicationStatuses.NEW || a.status == ApplicationStatuses.REJECTED,
+//      "Application status should be NEW or REJECTED for this operation."
+//    );
 
     for (uint8 i = 0; i < _geohashes.length; i++) {
       uint256 geohashTokenId = _geohashes[i] ^ uint256(spaceToken.GEOHASH_MASK());
