@@ -1,5 +1,5 @@
 {
-  "galtTokenAddress": "0x75106da855d4b6e8b14101ed5d934a58249e100a",
+  "galtTokenAddress": "0x4465b79b6430a78a37bc45d306815f41be09469c",
   "galtTokenAbi": [
     {
       "constant": true,
@@ -423,7 +423,7 @@
       "type": "event"
     }
   ],
-  "spaceTokenAddress": "0x6396f76c9e1f2329c5ac7d5b0a4b6eda862d1d21",
+  "spaceTokenAddress": "0xca89e3491fd5ecb3be0a4af39577f6b09d37df2f",
   "spaceTokenAbi": [
     {
       "constant": true,
@@ -1380,7 +1380,7 @@
       "type": "function"
     }
   ],
-  "splitMergeAddress": "0xc4ca0f918b07f872500530cfd97afdb4719ac4df",
+  "splitMergeAddress": "0x560b4fb72d53a78558fb66992df45c49314ba25f",
   "splitMergeAbi": [
     {
       "constant": true,
@@ -1676,6 +1676,25 @@
       "constant": true,
       "inputs": [
         {
+          "name": "_packageToken",
+          "type": "uint256"
+        }
+      ],
+      "name": "getPackageCount",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
           "name": "_geohashToken",
           "type": "uint256"
         }
@@ -1692,7 +1711,7 @@
       "type": "function"
     }
   ],
-  "plotManagerAddress": "0x57f212de08903b5e34035b14e00cb8abf7885a6f",
+  "plotManagerAddress": "0xb0d9dc301cf3bb8b5724a841971e348689e17a61",
   "plotManagerAbi": [
     {
       "constant": true,
@@ -2515,7 +2534,7 @@
       "type": "function"
     }
   ],
-  "landUtilsAddress": "0x28fe7c412756458d2308b7e0544a8e1ebaa0d2aa",
+  "landUtilsAddress": "0xc45dc6db6c94d4b33ca312a501a61acc71302332",
   "landUtilsAbi": [
     {
       "constant": true,
