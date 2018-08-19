@@ -1,5 +1,5 @@
 {
-  "galtTokenAddress": "0x8c899e927a6fdef2b992d9dfd10a8eb49a8bd14d",
+  "galtTokenAddress": "0x1144a30db89a34876b863b3f9b691700ade37df5",
   "galtTokenAbi": [
     {
       "constant": true,
@@ -423,7 +423,7 @@
       "type": "event"
     }
   ],
-  "spaceTokenAddress": "0x2306f63a78d803c33264941a31c55827295becfa",
+  "spaceTokenAddress": "0x6cde8b1c2d3ea9667ee15df0bf4cd1ba7f1ee71d",
   "spaceTokenAbi": [
     {
       "constant": true,
@@ -1380,7 +1380,7 @@
       "type": "function"
     }
   ],
-  "splitMergeAddress": "0xe544d5da67ec4a0a66f68676492461bd38146e4e",
+  "splitMergeAddress": "0x43c6ed633a61da80ecf6f61f7423fc416bbf0ecb",
   "splitMergeAbi": [
     {
       "constant": true,
@@ -1711,7 +1711,7 @@
       "type": "function"
     }
   ],
-  "plotManagerAddress": "0x5a56d72e305019c9f1307ee8fdf2f6927e6e4648",
+  "plotManagerAddress": "0xf3131e8debbf565f1d08d598413467ab081fb4e5",
   "plotManagerAbi": [
     {
       "constant": true,
@@ -2534,7 +2534,7 @@
       "type": "function"
     }
   ],
-  "landUtilsAddress": "0x6c804a9d00beadeca21e57878d183d830f33ef55",
+  "landUtilsAddress": "0xcdbd95d2a10d741be0572de17a66628ea5ef7ab4",
   "landUtilsAbi": [
     {
       "constant": true,

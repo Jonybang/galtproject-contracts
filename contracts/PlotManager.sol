@@ -108,9 +108,9 @@ contract PlotManager is Initializable, Ownable {
     require(a.applicant == msg.sender || a.validator == msg.sender, "Not valid sender");
     require(splitMerge != address(0), "SplitMerge address not set");
 
-    if(a.validator == msg.sender) {
-      require(isValidator(msg.sender), "Not active validator");
-    }
+//    if(a.validator == msg.sender) {
+//      require(isValidator(msg.sender), "Not active validator");
+//    }
 
     _;
   }
