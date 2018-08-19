@@ -74,7 +74,7 @@ contract SplitMerge is Initializable, Ownable {
     require(_geohashToken != 0, "Geohash is 0");
     require(spaceToken.ownerOf(_geohashToken) == msg.sender, "Geohash owner is not msg.sender");
 
-    spaceToken.transferFrom(spaceToken.ownerOf(_geohashToken), address(this), _geohashToken);
+    spaceToken.transferFrom(msg.sender, address(this), _geohashToken);
 
     packageToGeohashes[_packageToken].push(_geohashToken);
     geohashToPackage[_geohashToken] = _packageToken;
@@ -104,11 +104,11 @@ contract SplitMerge is Initializable, Ownable {
     uint256 _packageToken,
     uint256 _geohashToken
   )
-    public
-    ownerOrPlotManager
+    private
   {
     require(_geohashToken != 0, "Geohash is 0");
     require(spaceToken.ownerOf(_geohashToken) == address(this), "Geohash owner is not SplitMerge");
+    require(geohashToPackage[_geohashToken] == _packageToken, "Geohash dont belongs to package");
 
     spaceToken.transferFrom(address(this), msg.sender, _geohashToken);
     geohashToPackage[_geohashToken] = 0;
@@ -136,6 +136,10 @@ contract SplitMerge is Initializable, Ownable {
 
   function getPackageGeohashes(uint256 _packageToken) public view returns (uint256[]) {
     return packageToGeohashes[_packageToken];
+  }
+
+  function packageOfGeohash(uint256 _geohashToken) public view returns (uint256) {
+    return geohashToPackage[_geohashToken];
   }
 
   // TODO: implement in future
