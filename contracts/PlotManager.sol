@@ -259,13 +259,13 @@ contract PlotManager is Initializable, Ownable {
     bytes2[] _directions2
   )
     public
-//    onlyApplicantOrValidator(_aId)
+    onlyApplicantOrValidator(_aId)
   {
     Application storage a = applications[_aId];
-//    require(
-//      a.status == ApplicationStatuses.NEW || a.status == ApplicationStatuses.REJECTED,
-//      "Application status should be NEW or REJECTED for this operation."
-//    );
+    require(
+      a.status == ApplicationStatuses.NEW || a.status == ApplicationStatuses.REJECTED,
+      "Application status should be NEW or REJECTED for this operation."
+    );
 
     for (uint8 i = 0; i < _geohashes.length; i++) {
       uint256 geohashTokenId = _geohashes[i] ^ uint256(spaceToken.GEOHASH_MASK());
@@ -276,7 +276,7 @@ contract PlotManager is Initializable, Ownable {
     }
 
     // TODO: implement directions
-    splitMerge.removeGeohashesFromPackage(a.packageTokenId, _geohashes, _directions1, _directions2);
+//    splitMerge.removeGeohashesFromPackage(a.packageTokenId, _geohashes, _directions1, _directions2);
 
     if(splitMerge.getPackageCount(a.packageTokenId) == 0 && a.status == ApplicationStatuses.NEW) {
       a.status = ApplicationStatuses.DISASSEMBLED;
