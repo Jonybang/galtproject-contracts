@@ -18,7 +18,7 @@ module.exports = async function(deployer, network, accounts) {
   deployer.then(async () => {
     const coreTeam = accounts[0];
     const alice = accounts[1];
-      const bob = accounts[2];
+    const bob = accounts[2];
     // const proxiesAdmin = accounts[1];
 
     // Deploy contracts...
@@ -65,12 +65,9 @@ module.exports = async function(deployer, network, accounts) {
     await landUtils.initialize({ from: coreTeam });
 
     const jony = '0xf0430bbb78c3c359c22d4913484081a563b86170';
-      await plotManager.addValidator(
-          jony,
-          Web3.utils.utf8ToHex('Jonybang'),
-          Web3.utils.utf8ToHex('RU'),
-          { from: coreTeam }
-      );
+    await plotManager.addValidator(jony, Web3.utils.utf8ToHex('Jonybang'), Web3.utils.utf8ToHex('RU'), {
+      from: coreTeam
+    });
     // await plotManager.addValidator(
     //     bob,
     //   Web3.utils.utf8ToHex('Jonybang'),
@@ -102,8 +99,13 @@ module.exports = async function(deployer, network, accounts) {
     // await spaceToken.transferFrom(alice, bob, packageTokenId, { from: alice });
 
     await new Promise(resolve => {
+      const deployDirectory = `${__dirname}/../deployed`;
+      if (!fs.existsSync(deployDirectory)) {
+        fs.mkdirSync(deployDirectory);
+      }
+
       fs.writeFile(
-        `${__dirname}/../deployed_${network}.json`,
+        `${deployDirectory}/${network}.json`,
         JSON.stringify(
           {
             galtTokenAddress: galtToken.address,

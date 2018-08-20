@@ -5,7 +5,9 @@
   "directories": {
     "test": "test"
   },
-  "dependencies": {},
+  "dependencies": {
+    "surge": "^0.20.1"
+  },
   "devDependencies": {
     "@colony/eslint-config-colony": "5.0.0",
     "@galtproject/utils": "git://github.com/galtspace/galtproject-utils-js.git",
@@ -41,7 +43,8 @@
     "test": "truffle test --network test",
     "test-gas": "USE_GAS_REPORTER=yes truffle test --network development",
     "eslint": "eslint .",
-    "solium": "solium --dir ."
+    "solium": "solium --dir .",
+    "deploy-ganache": "rm -rf build && truffle migrate --network ganache && ./node_modules/.bin/surge ./deployed"
   },
   "author": "",
   "license": "ISC"
