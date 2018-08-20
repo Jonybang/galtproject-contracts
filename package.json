@@ -45,7 +45,8 @@
     "eslint": "eslint .",
     "solium": "solium --dir .",
     "deploy-ganache": "rm -rf build && truffle migrate --network ganache && ./node_modules/.bin/surge ./deployed $DOMAIN && echo \"CONTRACTS_CONFIG_URL=$DOMAIN\\ganache.json\"",
-    "deploy-testnet56": "rm -rf build && truffle migrate --network testnet56 && ./node_modules/.bin/surge ./deployed $DOMAIN && echo \"CONTRACTS_CONFIG_URL=$DOMAIN\\testnet56.json\""
+    "deploy-testnet56": "rm -rf build && truffle migrate --network testnet56 && ./node_modules/.bin/surge ./deployed $DOMAIN && echo \"CONTRACTS_CONFIG_URL=$DOMAIN\\testnet56.json\"",
+    "deploy-local": "rm -rf build && truffle migrate --network local && ./node_modules/.bin/surge ./deployed $DOMAIN && echo \"CONTRACTS_CONFIG_URL=$DOMAIN\\local.json\""
   },
   "author": "",
   "license": "ISC"

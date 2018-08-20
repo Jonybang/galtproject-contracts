@@ -23,7 +23,7 @@ module.exports = async function(deployer, network, accounts) {
     // const proxiesAdmin = accounts[1];
 
     // Deploy contracts...
-    console.log('Deploy contracts...');
+    console.log('Deploy contracts...', accounts.length);
     const galtToken = await GaltToken.new({ from: coreTeam });
     const spaceToken = await SpaceToken.new('Space Token', 'SPACE', { from: coreTeam });
     const splitMerge = await SplitMerge.new({ from: coreTeam });
