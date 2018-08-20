@@ -43,3 +43,8 @@ The project will be developed according to the following plan:
 Who is John Galt? We are! Join now!
 
 
+### Deploy to Ganache for UI
+
+1. Install and run Ganache
+2. npm i
+3. DOMAIN=your-surge.domain npm run deploy-ganache
