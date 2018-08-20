@@ -5,12 +5,13 @@ const PlotManager = artifacts.require('./PlotManager');
 const SplitMerge = artifacts.require('./SplitMerge');
 const Web3 = require('web3');
 const galt = require('@galtproject/utils');
+const web3 = new Web3(GaltToken.web3.currentProvider);
 // const AdminUpgradeabilityProxy = artifacts.require('zos-lib/contracts/upgradeability/AdminUpgradeabilityProxy.sol');
 
 const fs = require('fs');
 
 module.exports = async function(deployer, network, accounts) {
-  if (network === 'test' || network === 'local' || network === 'development') {
+  if (network === 'test' || network === 'development') {
     console.log('Skipping deployment migration');
     return;
   }
@@ -64,58 +65,17 @@ module.exports = async function(deployer, network, accounts) {
 
     await landUtils.initialize({ from: coreTeam });
 
-    const jony = '0xf0430bbb78c3c359c22d4913484081a563b86170';
-    await plotManager.addValidator(jony, Web3.utils.utf8ToHex('Jonybang'), Web3.utils.utf8ToHex('RU'), {
-      from: coreTeam
-    });
-
-    const nikita = '0x8d362af4c86b05d6F256147A6E76b9d7aF205A24';
-    await plotManager.addValidator(nikita, Web3.utils.utf8ToHex('Nikita'), Web3.utils.utf8ToHex('RU'), {
-      from: coreTeam
-    });
-
-    const igor = '0x06dba6eb6a1044b8cbcaa0033ea3897bf37e6671';
-    await plotManager.addValidator(igor, Web3.utils.utf8ToHex('Igor'), Web3.utils.utf8ToHex('RU'), {
-      from: coreTeam
-    });
-    // await plotManager.addValidator(
-    //     bob,
-    //   Web3.utils.utf8ToHex('Jonybang'),
-    //   Web3.utils.utf8ToHex('RU'),
-    //   { from: coreTeam }
-    // );
-    //
-    // const baseGeohash = galt.geohashToGeohash5('sezu06');
-    // const res = await plotManager.applyForPlotOwnership(
-    //   [baseGeohash, baseGeohash, baseGeohash, baseGeohash],
-    //   baseGeohash,
-    //     Web3.utils.sha3('111'),
-    //     Web3.utils.utf8ToHex('111'),
-    //     Web3.utils.asciiToHex('MN'),
-    //   7,
-    //   { from: alice, gas: 1000000, value: Web3.utils.toWei('0.1', 'ether') }
-    // );
-    //
-    // const aId = res.logs[0].args.id;
-    //
-    // const application = await plotManager.getApplicationById(aId);
-    //
-    // await plotManager.submitApplication(aId, { from: alice });
-    // await plotManager.lockApplicationForReview(aId, { from: bob });
-    // await plotManager.approveApplication(aId, Web3.utils.sha3('111'), { from: bob });
-    //
-    // const packageTokenId = application[2].toString(10);
-    // console.log('application.packageTokenId', packageTokenId);
-    // await spaceToken.transferFrom(alice, bob, packageTokenId, { from: alice });
-
     await new Promise(resolve => {
       const deployDirectory = `${__dirname}/../deployed`;
       if (!fs.existsSync(deployDirectory)) {
         fs.mkdirSync(deployDirectory);
       }
 
+      const deployFile = `${deployDirectory}/${network}.json`;
+      console.log(`saved to ${deployFile}`);
+
       fs.writeFile(
-        `${deployDirectory}/${network}.json`,
+        deployFile,
         JSON.stringify(
           {
             galtTokenAddress: galtToken.address,
