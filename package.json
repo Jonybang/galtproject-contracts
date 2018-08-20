@@ -44,7 +44,7 @@
     "test-gas": "USE_GAS_REPORTER=yes truffle test --network development",
     "eslint": "eslint .",
     "solium": "solium --dir .",
-    "deploy-ganache": "rm -rf build && truffle migrate --network ganache && ./node_modules/.bin/surge ./deployed"
+    "deploy-ganache": "rm -rf build && truffle migrate --network ganache && ./node_modules/.bin/surge ./deployed $DOMAIN"
   },
   "author": "",
   "license": "ISC"
