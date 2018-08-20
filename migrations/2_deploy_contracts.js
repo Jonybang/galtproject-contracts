@@ -11,7 +11,7 @@ const web3 = new Web3(GaltToken.web3.currentProvider);
 const fs = require('fs');
 
 module.exports = async function(deployer, network, accounts) {
-  if (network === 'test' || network === 'development') {
+  if (network === 'test' || network === 'local_test' || network === 'development') {
     console.log('Skipping deployment migration');
     return;
   }
@@ -23,7 +23,7 @@ module.exports = async function(deployer, network, accounts) {
     // const proxiesAdmin = accounts[1];
 
     // Deploy contracts...
-    console.log('Deploy contracts...', accounts.length);
+    console.log('Deploy contracts...');
     const galtToken = await GaltToken.new({ from: coreTeam });
     const spaceToken = await SpaceToken.new('Space Token', 'SPACE', { from: coreTeam });
     const splitMerge = await SplitMerge.new({ from: coreTeam });

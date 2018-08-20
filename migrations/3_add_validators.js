@@ -8,7 +8,7 @@ const fs = require('fs');
 const _ = require('lodash');
 
 module.exports = async function(deployer, network, accounts) {
-  if (network === 'test' || network === 'development') {
+  if (network === 'test' || network === 'local_test' || network === 'development') {
     console.log('Skipping deployment migration');
     return;
   }
