@@ -44,7 +44,7 @@ contract('SplitMerge', ([coreTeam, alice]) => {
   });
 
   describe('contract', () => {
-    it.only('should creating correctly', async function() {
+    it('should creating correctly', async function() {
       let res;
       // TODO: remove console.log lines when the tests work
       // console.log('spaceToken.mintGeohash', alice, this.firstGeohash);
@@ -68,7 +68,7 @@ contract('SplitMerge', ([coreTeam, alice]) => {
       const directions = [];
 
       await pIteration.forEach(geohashes, async geohash => {
-        console.log('mint', geohash);
+        // console.log('mint', geohash);
         res = await this.spaceToken.mintGeohash(alice, geohash, { from: coreTeam });
 
         geohashesTokenIds.push(galt.geohashToTokenId(geohash));
