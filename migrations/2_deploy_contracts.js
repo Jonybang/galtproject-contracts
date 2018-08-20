@@ -46,8 +46,8 @@ module.exports = async function(deployer, network, accounts) {
     // Call initialize methods (constructor substitute for proxy-backed contract)
     await spaceToken.initialize('Space Token', 'SPACE', { from: coreTeam });
     await spaceToken.addRoleTo(plotManager.address, 'minter', { from: coreTeam });
-    await spaceToken.addRoleTo(splitMerge.address, 'minter');
-    await spaceToken.addRoleTo(splitMerge.address, 'operator');
+    await spaceToken.addRoleTo(splitMerge.address, 'minter', { from: coreTeam });
+    await spaceToken.addRoleTo(splitMerge.address, 'operator', { from: coreTeam });
 
     await splitMerge.initialize(spaceToken.address, plotManager.address, { from: coreTeam });
 
