@@ -278,7 +278,7 @@ contract PlotManager is Initializable, Ownable {
     // TODO: implement directions
 //    splitMerge.removeGeohashesFromPackage(a.packageTokenId, _geohashes, _directions1, _directions2);
 
-    if(splitMerge.getPackageCount(a.packageTokenId) == 0 && a.status == ApplicationStatuses.NEW) {
+    if(splitMerge.packageGeohashesCount(a.packageTokenId) == 0 && a.status == ApplicationStatuses.NEW) {
       a.status = ApplicationStatuses.DISASSEMBLED;
     }
   }
@@ -358,7 +358,7 @@ contract PlotManager is Initializable, Ownable {
     require(a.validatorRewardEth > 0, "Reward in ETH is 0");
 
     if(a.status == ApplicationStatuses.REJECTED) {
-      require(splitMerge.getPackageCount(a.packageTokenId) == 0,
+      require(splitMerge.packageGeohashesCount(a.packageTokenId) == 0,
         "Application geohashes count must be 0 for REJECTED status");
     }
 
