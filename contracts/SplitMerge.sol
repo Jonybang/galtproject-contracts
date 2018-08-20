@@ -111,7 +111,7 @@ contract SplitMerge is Initializable, Ownable {
 //    require(geohashToPackage[_geohashToken] == _packageToken, "Geohash dont belongs to package");
 
 //    spaceToken.transferFrom(address(this), msg.sender, _geohashToken);
-    geohashToPackage[_geohashToken] = 0;
+//    geohashToPackage[_geohashToken] = 0;
   }
 
   function removeGeohashesFromPackage(
