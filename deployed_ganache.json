@@ -1,5 +1,5 @@
 {
-  "galtTokenAddress": "0xe6741a0aae00dcbd8ecf4ee96d737a4076706250",
+  "galtTokenAddress": "0x43263f1a9f7d7c3c4ab2f8e7ec99bfab505936ed",
   "galtTokenAbi": [
     {
       "constant": true,
@@ -423,7 +423,7 @@
       "type": "event"
     }
   ],
-  "spaceTokenAddress": "0xc9c6f5a3c924a7630d8b4139263ed173f8dbf785",
+  "spaceTokenAddress": "0x12b85ec7aca70501708e2e2cbb2a2c654f58e9b1",
   "spaceTokenAbi": [
     {
       "constant": true,
@@ -1214,25 +1214,6 @@
       "constant": true,
       "inputs": [
         {
-          "name": "_owner",
-          "type": "address"
-        }
-      ],
-      "name": "tokensOfOwner",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256[]"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
           "name": "_geohash",
           "type": "uint256"
         }
@@ -1261,44 +1242,6 @@
         {
           "name": "",
           "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "input",
-          "type": "bytes"
-        }
-      ],
-      "name": "geohashStringToGeohash5",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "_input",
-          "type": "uint256"
-        }
-      ],
-      "name": "geohash5ToGeohashString",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bytes32"
         }
       ],
       "payable": false,
@@ -1378,9 +1321,28 @@
       "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_owner",
+          "type": "address"
+        }
+      ],
+      "name": "tokensOfOwner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
     }
   ],
-  "splitMergeAddress": "0x7c0d1f0ecbd321ee73e85558710ea240f2f7aad9",
+  "splitMergeAddress": "0x7a50bfc529237b3ad4b7520dc672fc9f3fde7311",
   "splitMergeAbi": [
     {
       "constant": true,
@@ -1432,48 +1394,6 @@
         }
       ],
       "name": "packageToGeohashes",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "name": "geohashToPackage",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        },
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "name": "packageToContour",
       "outputs": [
         {
           "name": "",
@@ -1677,6 +1597,24 @@
           "type": "uint256"
         },
         {
+          "name": "_geohashToken",
+          "type": "uint256"
+        }
+      ],
+      "name": "removeGeohashFromPackageUnsafe",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_packageToken",
+          "type": "uint256"
+        },
+        {
           "name": "_geohashTokens",
           "type": "uint256[]"
         },
@@ -1715,7 +1653,7 @@
       "type": "function"
     }
   ],
-  "plotManagerAddress": "0x5a7536ee3476172dedb69b0d8dbc88bd932503e3",
+  "plotManagerAddress": "0x176ad25d493da68eb2f476af1fd40c4bf694855f",
   "plotManagerAbi": [
     {
       "constant": true,
@@ -2538,7 +2476,7 @@
       "type": "function"
     }
   ],
-  "landUtilsAddress": "0x8a72be018d6203f07325060a353418597807d020",
+  "landUtilsAddress": "0xd0246f7736400f3a69e8e8c73c16c1bf0edce4be",
   "landUtilsAbi": [
     {
       "constant": true,
