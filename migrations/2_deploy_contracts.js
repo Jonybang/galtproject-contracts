@@ -68,6 +68,11 @@ module.exports = async function(deployer, network, accounts) {
     await plotManager.addValidator(jony, Web3.utils.utf8ToHex('Jonybang'), Web3.utils.utf8ToHex('RU'), {
       from: coreTeam
     });
+
+    const nikita = '0x8d362af4c86b05d6F256147A6E76b9d7aF205A24';
+    await plotManager.addValidator(nikita, Web3.utils.utf8ToHex('Nikita'), Web3.utils.utf8ToHex('RU'), {
+      from: coreTeam
+    });
     // await plotManager.addValidator(
     //     bob,
     //   Web3.utils.utf8ToHex('Jonybang'),
