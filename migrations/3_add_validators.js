@@ -30,8 +30,8 @@ module.exports = async function(deployer, network, accounts) {
 
     const sendEthByNetwork = {
       local: 100000,
-      testnet56: 100000,
-      testnet57: 100000,
+      testnet56: 1000,
+      testnet57: 1000,
       development: 20,
       ganache: 20,
       production: 0
