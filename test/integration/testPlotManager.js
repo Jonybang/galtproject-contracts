@@ -491,6 +491,21 @@ contract('PlotManager', ([coreTeam, galtSpaceOrg, alice, bob, charlie]) => {
         const res = await this.plotManagerWeb3.methods.getApplicationById(this.aId).call();
         assert.equal(res.status, ApplicationStatuses.SUBMITTED);
       });
+
+        it.only('should transfer package to an applicant', async function() {
+            const packId = '0x0200000000000000000000000000000000000000000000000000000000000000';
+            await this.plotManager.approveApplication(this.aId, this.credentials, { from: bob });
+
+            let res = await this.plotManagerWeb3.methods.getApplicationById(this.aId).call();
+
+            const packageGeohashes = await this.splitMerge.getPackageGeohashes(res.packageTokenId);
+
+            await this.splitMerge.removeGeohashesFromPackage(res.packageTokenId, packageGeohashes, [], [], {
+                from: alice
+            });
+            res = await this.spaceToken.ownerOf(packId);
+            assert.equal(res, alice);
+        });
     });
 
     describe('#revertApplication()', () => {

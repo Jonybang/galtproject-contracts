@@ -26,11 +26,12 @@ module.exports = async function(deployer, network, accounts) {
       Nik: '0x83d61498cc955c4201042f12bd34e818f781b90b'
     };
 
-    const rewarder = accounts[3];
+    const rewarder = accounts[3] || accounts[2] || accounts[1] || accounts[0];
 
     const sendEthByNetwork = {
       local: 100000,
       testnet56: 100000,
+      testnet57: 100000,
       development: 20,
       ganache: 20,
       production: 0
