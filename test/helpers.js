@@ -10,7 +10,13 @@ module.exports = {
   hex(input) {
     return web3.utils.toHex(input);
   },
+  szabo(number) {
+    return web3.utils.toWei(number.toString(), 'szabo');
+  },
   ether(number) {
+    return web3.utils.toWei(number.toString(), 'ether');
+  },
+  galt(number) {
     return web3.utils.toWei(number.toString(), 'ether');
   },
   async sleep(timeout) {
