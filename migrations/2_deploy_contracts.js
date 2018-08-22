@@ -3,8 +3,10 @@ const SpaceToken = artifacts.require('./SpaceToken');
 const LandUtils = artifacts.require('./LandUtils');
 const PlotManager = artifacts.require('./PlotManager');
 const SplitMerge = artifacts.require('./SplitMerge');
+const GaltDex = artifacts.require('./GaltDex');
 const Web3 = require('web3');
 const galt = require('@galtproject/utils');
+
 const web3 = new Web3(GaltToken.web3.currentProvider);
 // const AdminUpgradeabilityProxy = artifacts.require('zos-lib/contracts/upgradeability/AdminUpgradeabilityProxy.sol');
 
@@ -29,6 +31,8 @@ module.exports = async function(deployer, network, accounts) {
     const splitMerge = await SplitMerge.new({ from: coreTeam });
     const plotManager = await PlotManager.new({ from: coreTeam });
     const landUtils = await LandUtils.new({ from: coreTeam });
+
+    const galtDex = await GaltDex.new({ from: coreTeam });
 
     // Setup proxies...
     // NOTICE: The address of a proxy creator couldn't be used in the future for logic contract calls.
@@ -65,6 +69,9 @@ module.exports = async function(deployer, network, accounts) {
 
     await landUtils.initialize({ from: coreTeam });
 
+    await galtDex.initialize(Web3.utils.toWei('1', 'szabo'), '1', '1', galtToken.address, { from: coreTeam });
+    await galtToken.mint(galtDex.address, Web3.utils.toWei('1000000', 'ether'));
+
     await new Promise(resolve => {
       const deployDirectory = `${__dirname}/../deployed`;
       if (!fs.existsSync(deployDirectory)) {
@@ -87,7 +94,9 @@ module.exports = async function(deployer, network, accounts) {
             plotManagerAddress: plotManager.address,
             plotManagerAbi: plotManager.abi,
             landUtilsAddress: landUtils.address,
-            landUtilsAbi: landUtils.abi
+            landUtilsAbi: landUtils.abi,
+            galtDexAddress: galtDex.address,
+            galtDexAbi: galtDex.abi
           },
           null,
           2
