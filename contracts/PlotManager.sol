@@ -8,8 +8,10 @@ import "./SpaceToken.sol";
 import "./SplitMerge.sol";
 
 
-contract PlotManager is Initializable, Ownable {
+contract PlotManager is Initializable, Ownable, RBAC {
   using SafeMath for uint256;
+
+  string public constant FEE_MANAGER = "fee_manager";
 
   enum ApplicationStatuses {
     NOT_EXISTS,
@@ -54,7 +56,6 @@ contract PlotManager is Initializable, Ownable {
   uint256 public applicationFeeInGalt;
   uint256 public galtSpaceEthShare;
   uint256 public galtSpaceGaltShare;
-  address galtSpaceRewardsAddress;
 
   mapping(bytes32 => Application) public applications;
   mapping(address => Validator) public validators;
@@ -78,7 +79,6 @@ contract PlotManager is Initializable, Ownable {
   function initialize(
     uint256 _validationFeeInEth,
     uint256 _galtSpaceEthShare,
-    address _galtSpaceRewardsAddress,
     SpaceToken _spaceToken,
     SplitMerge _splitMerge
   )
@@ -90,7 +90,6 @@ contract PlotManager is Initializable, Ownable {
     splitMerge = _splitMerge;
     applicationFeeInEth = _validationFeeInEth;
     galtSpaceEthShare = _galtSpaceEthShare;
-    galtSpaceRewardsAddress = _galtSpaceRewardsAddress;
   }
 
   modifier onlyApplicant(bytes32 _aId) {
@@ -132,6 +131,11 @@ contract PlotManager is Initializable, Ownable {
 
   function isValidator(address account) public view returns (bool) {
     return validators[account].active == true;
+  }
+
+  modifier onlyFeeManager() {
+    checkRole(msg.sender, FEE_MANAGER);
+    _;
   }
 
   function getValidator(
@@ -369,9 +373,7 @@ contract PlotManager is Initializable, Ownable {
     msg.sender.transfer(a.validatorRewardEth);
   }
 
-  function claimGaltSpaceRewardEth(bytes32 _aId) public {
-    require(msg.sender == galtSpaceRewardsAddress, "The method call allowed only for galtSpace address");
-
+  function claimGaltSpaceRewardEth(bytes32 _aId) public onlyFeeManager {
     Application storage a = applications[_aId];
 
     require(a.status == ApplicationStatuses.VALIDATOR_REWARDED, "Application status should be VALIDATOR_REWARDED");
@@ -462,5 +464,13 @@ contract PlotManager is Initializable, Ownable {
 
   function getApplicationsByValidator(address applicant) external view returns (bytes32[]) {
     return applicationsByValidator[applicant];
+  }
+
+  function addRoleTo(address _operator, string _role) public onlyOwner {
+    super.addRole(_operator, _role);
+  }
+
+  function removeRoleFrom(address _operator, string _role) public onlyOwner {
+    super.removeRole(_operator, _role);
   }
 }

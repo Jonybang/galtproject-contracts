@@ -30,9 +30,11 @@ contract('GaltDex', ([coreTeam, galtSpaceOrg, alice, bob, charlie]) => {
     this.galtToken = await GaltToken.new({ from: coreTeam });
     this.galtDex = await GaltDex.new({ from: coreTeam });
 
-    this.galtDex.initialize(szabo(1), fee.toString(10), fee.toString(10), this.galtToken.address, {
+    await this.galtDex.initialize(szabo(1), fee.toString(10), fee.toString(10), this.galtToken.address, {
       from: coreTeam
     });
+
+    this.galtDex.addRoleTo(galtSpaceOrg, 'fee_manager');
 
     await this.galtToken.mint(this.galtDex.address, ether(100));
 
@@ -61,12 +63,12 @@ contract('GaltDex', ([coreTeam, galtSpaceOrg, alice, bob, charlie]) => {
   });
 
   it('should be initialized successfully', async function() {
-    (await this.galtDex.baseExchangeRate()).toString(10).should.be.eq('1');
-    (await this.galtDex.galtToEthFee()).toString(10).should.be.eq('5');
-    (await this.galtDex.ethToGaltFee()).toString(10).should.be.eq('5');
+    (await this.galtDex.baseExchangeRate()).toString(10).should.be.eq(szabo(1).toString(10));
+    (await this.galtDex.galtFee()).toString(10).should.be.eq((15).toString(10));
+    (await this.galtDex.ethFee()).toString(10).should.be.eq((15).toString(10));
   });
 
-  describe.only('#buyGalt()', async () => {
+  describe('#buyGalt()', async () => {
     const ethToSend = parseInt(ether(10), 10);
     const shouldEthFee = (ethToSend / 100) * fee;
     const galtShouldReceive = ethToSend;
@@ -143,11 +145,11 @@ contract('GaltDex', ([coreTeam, galtSpaceOrg, alice, bob, charlie]) => {
       let ethFeePayout = await this.galtDex.ethFeePayout();
       ethFeePayout.toString(10).should.be.eq(shouldEthFee.toString(10));
 
-      const coreTeamEthBalance = await web3.eth.getBalance(coreTeam);
-      await this.galtDex.withdrawEthFee({ from: coreTeam });
-      const coreTeamEthBalanceProfit = (await web3.eth.getBalance(coreTeam)) - coreTeamEthBalance;
+      const galtSpaceOrgEthBalance = await web3.eth.getBalance(galtSpaceOrg);
+      await this.galtDex.withdrawEthFee({ from: galtSpaceOrg });
+      const galtSpaceOrgEthBalanceProfit = (await web3.eth.getBalance(galtSpaceOrg)) - galtSpaceOrgEthBalance;
 
-      (shouldEthFee - coreTeamEthBalanceProfit).should.be.lt(parseInt(ether(0.002), 10));
+      (shouldEthFee - galtSpaceOrgEthBalanceProfit).should.be.lt(parseInt(ether(0.005), 10));
 
       ethFeePayout = await this.galtDex.ethFeePayout();
       ethFeePayout.toString(10).should.be.eq((0).toString(10));
@@ -158,10 +160,10 @@ contract('GaltDex', ([coreTeam, galtSpaceOrg, alice, bob, charlie]) => {
       let galtFeePayout = await this.galtDex.galtFeePayout();
       galtFeePayout.toString(10).should.be.eq(shouldGaltFee.toString(10));
 
-      await this.galtDex.withdrawGaltFee({ from: coreTeam });
-      const coreTeamGaltBalance = await this.galtToken.balanceOf(coreTeam);
+      await this.galtDex.withdrawGaltFee({ from: galtSpaceOrg });
+      const galtSpaceOrgGaltBalance = await this.galtToken.balanceOf(galtSpaceOrg);
 
-      coreTeamGaltBalance.toString(10).should.be.eq(shouldGaltFee.toString(10));
+      galtSpaceOrgGaltBalance.toString(10).should.be.eq(shouldGaltFee.toString(10));
 
       galtFeePayout = await this.galtDex.galtFeePayout();
       galtFeePayout.toString(10).should.be.eq((0).toString(10));
