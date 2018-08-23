@@ -3,11 +3,14 @@ pragma experimental "v0.5.0";
 
 import "zos-lib/contracts/migrations/Initializable.sol";
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "openzeppelin-solidity/contracts/ownership/rbac/RBAC.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "./GaltToken.sol";
 
-contract GaltDex is Initializable, Ownable {
+contract GaltDex is Initializable, Ownable, RBAC {
   using SafeMath for uint256;
+
+  string public constant FEE_MANAGER = "fee_manager";
 
   GaltToken galtToken;
 
@@ -51,6 +54,11 @@ contract GaltDex is Initializable, Ownable {
     baseExchangeRate = _baseExchangeRate;
     galtFee = _galtFee;
     ethFee = _ethFee;
+  }
+
+  modifier onlyOwnerOrFeeManager() {
+    require(hasRole(msg.sender, FEE_MANAGER) || msg.sender == owner);
+    _;
   }
 
   function exchangeEthToGalt() public payable {
@@ -130,23 +138,31 @@ contract GaltDex is Initializable, Ownable {
     }
   }
 
-  function setEthFee(uint256 _ethFee) public onlyOwner {
+  function setEthFee(uint256 _ethFee) public onlyOwnerOrFeeManager {
     ethFee = _ethFee;
     emit LogSetEthFee(msg.sender, _ethFee);
   }
 
-  function setGaltFee(uint256 _galtFee) public onlyOwner {
+  function setGaltFee(uint256 _galtFee) public onlyOwnerOrFeeManager {
     galtFee = _galtFee;
     emit LogSetGaltFee(msg.sender, _galtFee);
   }
 
-  function withdrawEthFee() public onlyOwner {
+  function withdrawEthFee() public onlyOwnerOrFeeManager {
     msg.sender.transfer(ethFeePayout);
     ethFeePayout = 0;
   }
 
-  function withdrawGaltFee() public onlyOwner {
+  function withdrawGaltFee() public onlyOwnerOrFeeManager {
     galtToken.transfer(msg.sender, galtFeePayout);
     galtFeePayout = 0;
+  }
+
+  function addRoleTo(address _operator, string _role) public onlyOwner {
+    super.addRole(_operator, _role);
+  }
+
+  function removeRoleFrom(address _operator, string _role) public onlyOwner {
+    super.removeRole(_operator, _role);
   }
 }

@@ -54,7 +54,7 @@ contract('PlotManager', ([coreTeam, galtSpaceOrg, alice, bob, charlie]) => {
     this.splitMerge = await SplitMerge.new({ from: coreTeam });
 
     this.spaceToken.initialize('SpaceToken', 'SPACE', { from: coreTeam });
-    this.plotManager.initialize(ether(6), '24', galtSpaceOrg, this.spaceToken.address, this.splitMerge.address, {
+    this.plotManager.initialize(ether(6), '24', this.spaceToken.address, this.splitMerge.address, {
       from: coreTeam
     });
     this.splitMerge.initialize(this.spaceToken.address, this.plotManager.address, { from: coreTeam });
@@ -62,6 +62,8 @@ contract('PlotManager', ([coreTeam, galtSpaceOrg, alice, bob, charlie]) => {
     this.spaceToken.addRoleTo(this.plotManager.address, 'minter');
     this.spaceToken.addRoleTo(this.splitMerge.address, 'minter');
     this.spaceToken.addRoleTo(this.splitMerge.address, 'operator');
+
+    this.spaceToken.addRoleTo(galtSpaceOrg, 'fee_manager');
 
     this.plotManagerWeb3 = new web3.eth.Contract(this.plotManager.abi, this.plotManager.address);
     this.spaceTokenWeb3 = new web3.eth.Contract(this.spaceToken.abi, this.spaceToken.address);
