@@ -133,8 +133,8 @@ contract PlotManager is Initializable, Ownable, RBAC {
     return validators[account].active == true;
   }
 
-  modifier onlyOwnerOrFeeManager() {
-    require(hasRole(msg.sender, FEE_MANAGER) || msg.sender == owner);
+  modifier onlyFeeManager() {
+    checkRole(msg.sender, FEE_MANAGER);
     _;
   }
 
@@ -373,7 +373,7 @@ contract PlotManager is Initializable, Ownable, RBAC {
     msg.sender.transfer(a.validatorRewardEth);
   }
 
-  function claimGaltSpaceRewardEth(bytes32 _aId) public onlyOwnerOrFeeManager {
+  function claimGaltSpaceRewardEth(bytes32 _aId) public onlyFeeManager {
     Application storage a = applications[_aId];
 
     require(a.status == ApplicationStatuses.VALIDATOR_REWARDED, "Application status should be VALIDATOR_REWARDED");

@@ -56,8 +56,8 @@ contract GaltDex is Initializable, Ownable, RBAC {
     ethFee = _ethFee;
   }
 
-  modifier onlyOwnerOrFeeManager() {
-    require(hasRole(msg.sender, FEE_MANAGER) || msg.sender == owner);
+  modifier onlyFeeManager() {
+    checkRole(msg.sender, FEE_MANAGER);
     _;
   }
 
@@ -138,22 +138,22 @@ contract GaltDex is Initializable, Ownable, RBAC {
     }
   }
 
-  function setEthFee(uint256 _ethFee) public onlyOwnerOrFeeManager {
+  function setEthFee(uint256 _ethFee) public onlyFeeManager {
     ethFee = _ethFee;
     emit LogSetEthFee(msg.sender, _ethFee);
   }
 
-  function setGaltFee(uint256 _galtFee) public onlyOwnerOrFeeManager {
+  function setGaltFee(uint256 _galtFee) public onlyFeeManager {
     galtFee = _galtFee;
     emit LogSetGaltFee(msg.sender, _galtFee);
   }
 
-  function withdrawEthFee() public onlyOwnerOrFeeManager {
+  function withdrawEthFee() public onlyFeeManager {
     msg.sender.transfer(ethFeePayout);
     ethFeePayout = 0;
   }
 
-  function withdrawGaltFee() public onlyOwnerOrFeeManager {
+  function withdrawGaltFee() public onlyFeeManager {
     galtToken.transfer(msg.sender, galtFeePayout);
     galtFeePayout = 0;
   }
