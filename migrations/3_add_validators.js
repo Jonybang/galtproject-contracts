@@ -1,4 +1,5 @@
 const PlotManager = artifacts.require('./PlotManager');
+const GaltDex = artifacts.require('./GaltDex');
 const Web3 = require('web3');
 // const AdminUpgradeabilityProxy = artifacts.require('zos-lib/contracts/upgradeability/AdminUpgradeabilityProxy.sol');
 
@@ -18,6 +19,7 @@ module.exports = async function(deployer, network, accounts) {
   deployer.then(async () => {
     const data = JSON.parse(fs.readFileSync(`${__dirname}/../deployed/${network}.json`).toString());
     const plotManager = await PlotManager.at(data.plotManagerAddress);
+    const galtDex = await GaltDex.at(data.galtDexAddress);
 
     const validators = {
       Jonybang: '0xf0430bbb78c3c359c22d4913484081a563b86170',
@@ -44,6 +46,9 @@ module.exports = async function(deployer, network, accounts) {
           from: coreTeam
         })
       );
+
+      promises.push(galtDex.addRoleTo(address, 'fee_manager', { from: coreTeam }));
+      promises.push(plotManager.addRoleTo(address, 'fee_manager', { from: coreTeam }));
 
       if (!sendEthByNetwork[network]) {
         return;

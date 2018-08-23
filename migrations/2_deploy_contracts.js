@@ -56,20 +56,14 @@ module.exports = async function(deployer, network, accounts) {
 
     await splitMerge.initialize(spaceToken.address, plotManager.address, { from: coreTeam });
 
-    await plotManager.initialize(
-      Web3.utils.toWei('0.1', 'ether'),
-      '25',
-      coreTeam,
-      spaceToken.address,
-      splitMerge.address,
-      {
-        from: coreTeam
-      }
-    );
+    await plotManager.initialize(Web3.utils.toWei('0.1', 'ether'), '25', spaceToken.address, splitMerge.address, {
+      from: coreTeam
+    });
 
     await landUtils.initialize({ from: coreTeam });
 
     await galtDex.initialize(Web3.utils.toWei('1', 'szabo'), '1', '1', galtToken.address, { from: coreTeam });
+
     await galtToken.mint(galtDex.address, Web3.utils.toWei('1000000', 'ether'));
 
     await new Promise(resolve => {
