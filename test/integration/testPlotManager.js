@@ -63,7 +63,7 @@ contract('PlotManager', ([coreTeam, galtSpaceOrg, alice, bob, charlie]) => {
     this.spaceToken.addRoleTo(this.splitMerge.address, 'minter');
     this.spaceToken.addRoleTo(this.splitMerge.address, 'operator');
 
-    this.spaceToken.addRoleTo(galtSpaceOrg, 'fee_manager');
+    this.plotManager.addRoleTo(galtSpaceOrg, 'fee_manager');
 
     this.plotManagerWeb3 = new web3.eth.Contract(this.plotManager.abi, this.plotManager.address);
     this.spaceTokenWeb3 = new web3.eth.Contract(this.spaceToken.abi, this.spaceToken.address);
@@ -690,7 +690,7 @@ contract('PlotManager', ([coreTeam, galtSpaceOrg, alice, bob, charlie]) => {
         await this.plotManager.claimValidatorRewardEth(this.aId, { from: bob });
       });
 
-      it('should allow validator claim reward', async function() {
+      it('should allow galtSpaceOrg claim reward', async function() {
         const plotManagerInitialBalance = new BN(await web3.eth.getBalance(this.plotManager.address));
         const galtSpaceOrgInitialBalance = new BN(await web3.eth.getBalance(galtSpaceOrg));
         await this.plotManager.claimGaltSpaceRewardEth(this.aId, { from: galtSpaceOrg });
