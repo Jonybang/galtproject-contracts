@@ -21,6 +21,7 @@ contract GaltDex is Initializable, Ownable, RBAC {
   uint256 public galtToEthSum;
   uint256 public ethToGaltSum;
 
+  // TODO: set galtFee as ether
   uint256 public galtFee;
   uint256 public ethFee;
 
@@ -46,8 +47,8 @@ contract GaltDex is Initializable, Ownable, RBAC {
     uint256 _ethFee,
     GaltToken _galtToken
   )
-    public
-    isInitializer
+  public
+  isInitializer
   {
     owner = msg.sender;
     galtToken = _galtToken;
@@ -77,7 +78,7 @@ contract GaltDex is Initializable, Ownable, RBAC {
 
     emit LogExchangeEthToGalt(msg.sender, msg.value, galtToSend, ethFeeForAmount, galtToken.balanceOf(address(this)), _exchangeRate);
   }
-  
+
   function getExchangeEthAmountForGalt(uint256 ethAmount) public view returns(uint256) {
     return ethAmount.mul(exchangeRate(ethAmount)).div(exchangeRatePrecision);
   }
@@ -124,15 +125,16 @@ contract GaltDex is Initializable, Ownable, RBAC {
     if(ethToGaltSum > 0 && address(this).balance > 0) {
       // TODO: is galtFeeTotalPayout and ethFeeTotalPayout should be used?
       return (
-              galtToken.totalSupply()
-                .sub(galtToken.balanceOf(address(this)))
-//                .add(galtFeeTotalPayout)
-            )
-            .mul(exchangeRatePrecision)
-            .div(
-              address(this).balance - minusBalance
-//                .add(ethFeeTotalPayout)
-            );
+        galtToken.totalSupply()
+          .sub(galtToken.balanceOf(address(this)))
+          .add(galtFeePayout)
+      )
+      .mul(exchangeRatePrecision)
+      .div(
+        address(this).balance
+          .sub(ethFeePayout)
+          .sub(minusBalance)
+      );
     } else {
       return baseExchangeRate;
     }
