@@ -261,13 +261,13 @@ contract('PlotManager', ([coreTeam, galtSpaceOrg, alice, bob, charlie]) => {
         await this.plotManager.lockApplicationForReview(this.aId, { from: bob });
         await this.plotManager.revertApplication(this.aId, { from: bob });
 
-        let res = await this.splitMerge.packageGeohashesCount(
+        let res = await this.splitMerge.getPackageGeohashesCount(
           '0x0200000000000000000000000000000000000000000000000000000000000000'
         );
         assert.equal(res, 9);
 
         await this.plotManager.addGeohashesToApplication(this.aId, geohashes2, [], [], { from: alice });
-        res = await this.splitMerge.packageGeohashesCount(
+        res = await this.splitMerge.getPackageGeohashesCount(
           '0x0200000000000000000000000000000000000000000000000000000000000000'
         );
         assert.equal(res, 11);
@@ -580,7 +580,7 @@ contract('PlotManager', ([coreTeam, galtSpaceOrg, alice, bob, charlie]) => {
         res = await this.spaceToken.ownerOf(galt.geohashToTokenId(geohashesToRemove[1]));
         assert.equal(res, this.splitMerge.address);
 
-        res = await this.splitMerge.packageGeohashesCount(
+        res = await this.splitMerge.getPackageGeohashesCount(
           '0x0200000000000000000000000000000000000000000000000000000000000000'
         );
         assert.equal(res, 18);
@@ -594,7 +594,7 @@ contract('PlotManager', ([coreTeam, galtSpaceOrg, alice, bob, charlie]) => {
         res = await this.spaceToken.ownerOf(galt.geohashToTokenId(geohashesToRemove[1]));
         assert.equal(res, this.plotManager.address);
 
-        res = await this.splitMerge.packageGeohashesCount(
+        res = await this.splitMerge.getPackageGeohashesCount(
           '0x0200000000000000000000000000000000000000000000000000000000000000'
         );
         assert.equal(res, 16);
@@ -608,7 +608,7 @@ contract('PlotManager', ([coreTeam, galtSpaceOrg, alice, bob, charlie]) => {
         const packageGeohashes = await this.splitMerge.getPackageGeohashes(res.packageTokenId);
         const geohashesToRemove = packageGeohashes.map(tokenId => galt.tokenIdToGeohash(tokenId.toString(10)));
 
-        res = await this.splitMerge.packageGeohashesCount(res.packageTokenId);
+        res = await this.splitMerge.getPackageGeohashesCount(res.packageTokenId);
         assert.equal(res, 18);
 
         await this.plotManager.removeGeohashesFromApplication(this.aId, geohashesToRemove, [], [], {
@@ -618,7 +618,7 @@ contract('PlotManager', ([coreTeam, galtSpaceOrg, alice, bob, charlie]) => {
         res = await this.plotManagerWeb3.methods.getApplicationById(this.aId).call();
         assert.equal(res.status, ApplicationStatuses.DISASSEMBLED);
 
-        res = await this.splitMerge.packageGeohashesCount(res.packageTokenId);
+        res = await this.splitMerge.getPackageGeohashesCount(res.packageTokenId);
         assert.equal(res, 0);
       });
     });
@@ -671,7 +671,7 @@ contract('PlotManager', ([coreTeam, galtSpaceOrg, alice, bob, charlie]) => {
         res = await this.plotManagerWeb3.methods.getApplicationById(this.aId).call();
         assert.equal(res.status, ApplicationStatuses.REJECTED);
 
-        res = await this.splitMerge.packageGeohashesCount(res.packageTokenId);
+        res = await this.splitMerge.getPackageGeohashesCount(res.packageTokenId);
         assert.equal(res.toString(10), (0).toString(10));
 
         const bobsInitialBalance = new BN(await web3.eth.getBalance(bob));
