@@ -62,7 +62,13 @@ module.exports = async function(deployer, network, accounts) {
 
     await landUtils.initialize({ from: coreTeam });
 
-    await galtDex.initialize(Web3.utils.toWei('100', 'szabo'), '1', '1', galtToken.address, { from: coreTeam });
+    await galtDex.initialize(
+      Web3.utils.toWei('100', 'szabo'),
+      Web3.utils.toWei('1', 'szabo'),
+      Web3.utils.toWei('1', 'szabo'),
+      galtToken.address,
+      { from: coreTeam }
+    );
 
     await galtToken.mint(galtDex.address, Web3.utils.toWei('1000000', 'ether'));
 
