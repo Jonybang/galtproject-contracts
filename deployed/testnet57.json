@@ -1,5 +1,5 @@
 {
-  "galtTokenAddress": "0xf60b458fe6d6f8aec06488265be397bbe6981089",
+  "galtTokenAddress": "0x7727d1f818d71892d9b5a2ec33c669ad580ed877",
   "galtTokenAbi": [
     {
       "constant": true,
@@ -423,7 +423,7 @@
       "type": "event"
     }
   ],
-  "spaceTokenAddress": "0x6ded8432906004827712d1bbb1da548c7d681ab7",
+  "spaceTokenAddress": "0x798e215732af7de31b91a1fb40f6e7ac10259e2d",
   "spaceTokenAbi": [
     {
       "constant": true,
@@ -1380,7 +1380,7 @@
       "type": "function"
     }
   ],
-  "splitMergeAddress": "0x44a5800020b169976ff57790e243cd13bd08eed5",
+  "splitMergeAddress": "0x78eb4d2b606a0208794c1223d746bf761996a9f3",
   "splitMergeAbi": [
     {
       "constant": true,
@@ -1474,25 +1474,6 @@
         }
       ],
       "name": "packageToContour",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "name": "packageGeohashesCount",
       "outputs": [
         {
           "name": "",
@@ -1713,9 +1694,28 @@
       "payable": false,
       "stateMutability": "view",
       "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_packageToken",
+          "type": "uint256"
+        }
+      ],
+      "name": "getPackageGeohashesCount",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
     }
   ],
-  "plotManagerAddress": "0x2d1a5ab33b6c83e19d9f7b83fd6fa7df85c12241",
+  "plotManagerAddress": "0x67a6c1f023522cfa8e29eea28b82d069b9e1558d",
   "plotManagerAbi": [
     {
       "constant": true,
@@ -2659,7 +2659,7 @@
       "type": "function"
     }
   ],
-  "landUtilsAddress": "0xfb906f2c2e5e4850a693fc0006d0845a1e1c1f0a",
+  "landUtilsAddress": "0x83a6ad6b4054148b3878aef096df6969d2675808",
   "landUtilsAbi": [
     {
       "constant": true,
@@ -2685,7 +2685,7 @@
       "type": "function"
     }
   ],
-  "galtDexAddress": "0x4bd22fdfd11ea41ce2ed3383056b5d008db80a31",
+  "galtDexAddress": "0xd74a821e8aeed3ebbe989f70804e96b009d55106",
   "galtDexAbi": [
     {
       "constant": true,
@@ -2764,6 +2764,20 @@
         {
           "name": "",
           "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "feePrecision",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
         }
       ],
       "payable": false,
