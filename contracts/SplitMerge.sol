@@ -150,6 +150,7 @@ contract SplitMerge is Initializable, Ownable {
 
     if(getPackageGeohashesCount(_packageToken) == 0) {
       spaceToken.transferFrom(msg.sender, address(this), _packageToken);
+//      setPackageContour(_packageToken, uint256[]);
     }
   }
 
@@ -161,13 +162,58 @@ contract SplitMerge is Initializable, Ownable {
     return packageToGeohashes[_packageToken].length;
   }
 
-  // TODO: implement in future
-  //  function splitGeohash(uint256 _geohashToken) public {
-  //
-  //  }
+  function splitGeohash(uint256 _parentGeohashToken) public returns (uint256[32]) {
+    require(spaceToken.ownerOf(_parentGeohashToken) == msg.sender, "Geohash owner is not msg.sender");
 
-  // TODO: implement in future
-  //  function mergeGeohash(uint256[] _geohashToken) public {
-  //
-  //  }
+    uint256 geohash5 = spaceToken.tokenIdToGeohash(_parentGeohashToken);
+
+    uint256[32] memory childrenTokensIds;
+    for (uint8 i = 0; i < 32; i++) {
+      bytes32 childSymbol = bytes32(i);
+      bytes32 childHex = bytes32(geohash5 << 5) ^ childSymbol;
+      uint256 childGeohash5 = uint256(childHex);
+      uint256 childGeohashTokenId = spaceToken.geohashToTokenId(childGeohash5);
+      childrenTokensIds[i] = childGeohashTokenId;
+
+      bool childTokenExists = spaceToken.exists(childGeohashTokenId);
+
+      if(childTokenExists) {
+        if(spaceToken.ownerOf(childGeohashTokenId) == address(this)) {
+          spaceToken.transferFrom(address(this), msg.sender, childGeohashTokenId);
+        } else {
+          require(false, "Child tokens must be not exists or owned by msg.sender or SplitMerge contract");
+        }
+      } else {
+        spaceToken.mintGeohash(msg.sender, childGeohash5);
+      }
+    }
+
+    spaceToken.transferFrom(msg.sender, address(this), _parentGeohashToken);
+
+    return childrenTokensIds;
+  }
+
+  function mergeGeohash(uint256 _parentGeohashToken) public {
+    require(!spaceToken.exists(_parentGeohashToken) || spaceToken.ownerOf(_parentGeohashToken) == address(this),
+      "Geohash parent must be not exits or owner should be SplitMerge");
+
+    uint256 geohash5 = spaceToken.tokenIdToGeohash(_parentGeohashToken);
+
+    for (uint8 i = 0; i < 32; i++) {
+      bytes32 childSymbol = bytes32(i);
+      bytes32 childHex = bytes32(geohash5 << 5) ^ childSymbol;
+      uint256 childGeohash5 = uint256(childHex);
+      uint256 childGeohashTokenId = spaceToken.geohashToTokenId(childGeohash5);
+
+      require(spaceToken.ownerOf(childGeohashTokenId) == msg.sender, "Geohash children must be owned by msg.sender");
+
+      spaceToken.transferFrom(msg.sender, address(this), childGeohashTokenId);
+    }
+
+    if(spaceToken.exists(_parentGeohashToken)) {
+      spaceToken.transferFrom(address(this), msg.sender, _parentGeohashToken);
+    } else {
+      spaceToken.mintGeohash(msg.sender, geohash5);
+    }
+  }
 }
