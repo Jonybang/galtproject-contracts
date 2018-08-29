@@ -1,5 +1,5 @@
 {
-  "galtTokenAddress": "0x7727d1f818d71892d9b5a2ec33c669ad580ed877",
+  "galtTokenAddress": "0xa4ac91c709a79d0e168b1181072ab64d9c0d2d3d",
   "galtTokenAbi": [
     {
       "constant": true,
@@ -423,7 +423,7 @@
       "type": "event"
     }
   ],
-  "spaceTokenAddress": "0x798e215732af7de31b91a1fb40f6e7ac10259e2d",
+  "spaceTokenAddress": "0xd06434ed1701c143d2992aa83ca34697f325114b",
   "spaceTokenAbi": [
     {
       "constant": true,
@@ -1380,7 +1380,7 @@
       "type": "function"
     }
   ],
-  "splitMergeAddress": "0x78eb4d2b606a0208794c1223d746bf761996a9f3",
+  "splitMergeAddress": "0xa80c8bb3ca47fc5a8f002facbd290b28672eb18d",
   "splitMergeAbi": [
     {
       "constant": true,
@@ -1713,9 +1713,42 @@
       "payable": false,
       "stateMutability": "view",
       "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_parentGeohashToken",
+          "type": "uint256"
+        }
+      ],
+      "name": "splitGeohash",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256[32]"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_parentGeohashToken",
+          "type": "uint256"
+        }
+      ],
+      "name": "mergeGeohash",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
     }
   ],
-  "plotManagerAddress": "0x67a6c1f023522cfa8e29eea28b82d069b9e1558d",
+  "plotManagerAddress": "0xea5afb872e0c89cb98afed61527f2cf944524596",
   "plotManagerAbi": [
     {
       "constant": true,
@@ -2659,7 +2692,7 @@
       "type": "function"
     }
   ],
-  "landUtilsAddress": "0x83a6ad6b4054148b3878aef096df6969d2675808",
+  "landUtilsAddress": "0xaf5eef34728dc69d5030ea02fb42b02fd4871f32",
   "landUtilsAbi": [
     {
       "constant": true,
@@ -2685,7 +2718,7 @@
       "type": "function"
     }
   ],
-  "galtDexAddress": "0xd74a821e8aeed3ebbe989f70804e96b009d55106",
+  "galtDexAddress": "0xffcd836ef107e7ca79bac2598c3812536af14e9e",
   "galtDexAbi": [
     {
       "constant": true,

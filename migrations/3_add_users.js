@@ -25,6 +25,7 @@ module.exports = async function(deployer, network, accounts) {
       Jonybang: '0xf0430bbb78c3c359c22d4913484081a563b86170',
       Nikita: '0x8d362af4c86b05d6F256147A6E76b9d7aF205A24',
       Igor: '0x06dba6eb6a1044b8cbcaa0033ea3897bf37e6671',
+      Igor2: '0x8052C9fc345dB9c1A70Afc0A81416029F23E5f76',
       Nik: '0x486129f16423bb74786abc99eab06897f73310f5',
       Nik2: '0x83d61498cc955c4201042f12bd34e818f781b90b',
       NickUser: '0x7184e0fF3c8D6FC24B986177c131290A0a7A9B28',
@@ -33,7 +34,7 @@ module.exports = async function(deployer, network, accounts) {
     };
 
     const adminsList = ['Jonybang', 'Nikita', 'Igor', 'Nik', 'Nik2', 'NickAdmin'];
-    const validatorsList = ['Jonybang', 'Nikita', 'Igor', 'Nik', 'Nik2', 'NickValidator'];
+    const validatorsList = ['Jonybang', 'Nikita', 'Igor', 'Igor2', 'Nik', 'Nik2', 'NickValidator'];
 
     const rewarder = accounts[3] || accounts[2] || accounts[1] || accounts[0];
 
