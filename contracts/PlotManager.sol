@@ -32,7 +32,6 @@ contract PlotManager is Initializable, Ownable, RBAC {
 
   struct Application {
     bytes32 id;
-    address operator;
     address applicant;
     address validator;
     bytes32 credentialsHash;
@@ -62,6 +61,9 @@ contract PlotManager is Initializable, Ownable, RBAC {
   mapping(address => Validator) public validators;
   mapping(address => bytes32[]) public applicationsByAddresses;
   bytes32[] applicationsArray;
+
+  mapping (bytes32 => address) public applicationApprovals;
+  mapping (address => mapping (address => bool)) public operatorApprovals;
 
   // WARNING: we do not remove applications from validator's list,
   // so do not rely on this variable to verify whether validator
@@ -96,7 +98,7 @@ contract PlotManager is Initializable, Ownable, RBAC {
   modifier onlyApplicant(bytes32 _aId) {
     Application storage a = applications[_aId];
 
-    require(a.applicant == msg.sender || a.operator == msg.sender, "Not valid sender");
+    require(a.applicant == msg.sender || getApproved(_aId) == msg.sender || isApprovedForAll(a.applicant, msg.sender), "Not valid sender");
     require(splitMerge != address(0), "SplitMerge address not set");
 
     _;
@@ -105,7 +107,7 @@ contract PlotManager is Initializable, Ownable, RBAC {
   modifier onlyApplicantOrValidator(bytes32 _aId) {
     Application storage a = applications[_aId];
 
-    require(a.applicant == msg.sender || a.operator == msg.sender || a.validator == msg.sender, "Not valid sender");
+    require(a.applicant == msg.sender || getApproved(_aId) == msg.sender || isApprovedForAll(a.applicant, msg.sender) || a.validator == msg.sender, "Not valid sender");
     require(splitMerge != address(0), "SplitMerge address not set");
 
     if (a.validator == msg.sender) {
@@ -173,6 +175,25 @@ contract PlotManager is Initializable, Ownable, RBAC {
     validators[_validator].active = false;
   }
 
+  function approve(address _to, bytes32 _aId) public onlyApplicant(_aId) {
+    Application storage a = applications[_aId];
+    require(_to != a.applicant);
+    applicationApprovals[_aId] = _to;
+  }
+
+  function getApproved(bytes32 _aId) public view returns (address) {
+    return applicationApprovals[_aId];
+  }
+
+  function setApprovalForAll(address _to, bool _approved) public {
+    require(_to != msg.sender);
+    operatorApprovals[msg.sender][_to] = _approved;
+  }
+
+  function isApprovedForAll(address _owner, address _operator) public view returns (bool) {
+    return operatorApprovals[_owner][_operator];
+  }
+
   function applyForPlotOwnership(
     address _applicant,
     uint256[] _packageContour,
@@ -196,8 +217,10 @@ contract PlotManager is Initializable, Ownable, RBAC {
 
     a.status = ApplicationStatuses.NEW;
     a.id = _id;
-    a.operator = msg.sender;
     a.applicant = _applicant;
+    if(msg.sender != _applicant) {
+      applicationApprovals[_id] = msg.sender;
+    }
     a.country = _country;
     a.credentialsHash = _credentialsHash;
     a.ledgerIdentifier = _ledgerIdentifier;
@@ -407,7 +430,6 @@ contract PlotManager is Initializable, Ownable, RBAC {
     view
     returns (
       address applicant,
-      address operator,
       address validator,
       uint256 packageTokenId,
       bytes32 credentialsHash,
@@ -423,7 +445,6 @@ contract PlotManager is Initializable, Ownable, RBAC {
 
     return (
       m.applicant,
-      m.operator,
       m.validator,
       m.packageTokenId,
       m.credentialsHash,
