@@ -175,7 +175,7 @@ contract PlotManager is Initializable, Ownable, RBAC {
     validators[_validator].active = false;
   }
 
-  function approve(address _to, bytes32 _aId) public onlyApplicant(_aId) {
+  function approve(address _to, bytes32 _aId) public onlyApplicantOrValidator(_aId) {
     Application storage a = applications[_aId];
     require(_to != a.applicant);
     applicationApprovals[_aId] = _to;
