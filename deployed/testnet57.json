@@ -1,5 +1,5 @@
 {
-  "galtTokenAddress": "0xa4ac91c709a79d0e168b1181072ab64d9c0d2d3d",
+  "galtTokenAddress": "0x86ef1c892b896f61980fe177bd64513d37afa586",
   "galtTokenAbi": [
     {
       "constant": true,
@@ -423,7 +423,7 @@
       "type": "event"
     }
   ],
-  "spaceTokenAddress": "0xd06434ed1701c143d2992aa83ca34697f325114b",
+  "spaceTokenAddress": "0x87dc317704dbcf92e2f61b5cba7c75d93fb6182a",
   "spaceTokenAbi": [
     {
       "constant": true,
@@ -1378,9 +1378,23 @@
       "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "clearApprove",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
     }
   ],
-  "splitMergeAddress": "0xa80c8bb3ca47fc5a8f002facbd290b28672eb18d",
+  "splitMergeAddress": "0x9313ffd08571b7316043ca26559a5b6561ca9448",
   "splitMergeAbi": [
     {
       "constant": true,
@@ -1748,7 +1762,7 @@
       "type": "function"
     }
   ],
-  "plotManagerAddress": "0xea5afb872e0c89cb98afed61527f2cf944524596",
+  "plotManagerAddress": "0x6aadb1588d0a5ad4a3c76123ba2fab938a87c28f",
   "plotManagerAbi": [
     {
       "constant": true,
@@ -1778,6 +1792,29 @@
       ],
       "name": "checkRole",
       "outputs": [],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "address"
+        },
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "operatorApprovals",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
       "payable": false,
       "stateMutability": "view",
       "type": "function"
@@ -1964,6 +2001,25 @@
       "constant": true,
       "inputs": [],
       "name": "owner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "name": "applicationApprovals",
       "outputs": [
         {
           "name": "",
@@ -2294,6 +2350,102 @@
     {
       "constant": false,
       "inputs": [
+        {
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "name": "_aId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "approve",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_aId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getApproved",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_aId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "clearApprove",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "name": "_approved",
+          "type": "bool"
+        }
+      ],
+      "name": "setApprovalForAll",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_owner",
+          "type": "address"
+        },
+        {
+          "name": "_operator",
+          "type": "address"
+        }
+      ],
+      "name": "isApprovedForAll",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_applicant",
+          "type": "address"
+        },
         {
           "name": "_packageContour",
           "type": "uint256[]"
@@ -2692,7 +2844,7 @@
       "type": "function"
     }
   ],
-  "landUtilsAddress": "0xaf5eef34728dc69d5030ea02fb42b02fd4871f32",
+  "landUtilsAddress": "0x56fccbba8bcd8cac411b7ffafe10852779f8b29c",
   "landUtilsAbi": [
     {
       "constant": true,
@@ -2718,7 +2870,7 @@
       "type": "function"
     }
   ],
-  "galtDexAddress": "0xffcd836ef107e7ca79bac2598c3812536af14e9e",
+  "galtDexAddress": "0xd8d1b9e98690659bda42e42e76754b019aedb934",
   "galtDexAbi": [
     {
       "constant": true,
