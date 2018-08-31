@@ -141,7 +141,7 @@ contract('SplitMerge', ([coreTeam, alice, bob]) => {
       assert.equal(res, '1');
     });
 
-    it('should creating correctly by operator', async function() {
+    it.only('should creating correctly by operator', async function() {
       let res;
       // TODO: remove console.log lines when the tests work
       // console.log('spaceToken.mintGeohash', alice, this.firstGeohash);

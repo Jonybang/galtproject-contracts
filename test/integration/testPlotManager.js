@@ -500,7 +500,7 @@ contract('PlotManager', ([coreTeam, galtSpaceOrg, alice, bob, charlie]) => {
         assert.equal(res.status, ApplicationStatuses.SUBMITTED);
       });
 
-        it.only('should transfer package to an applicant', async function() {
+        it('should transfer package to an applicant', async function() {
             const packId = '0x0200000000000000000000000000000000000000000000000000000000000000';
             await this.plotManager.approveApplication(this.aId, this.credentials, { from: bob });
 
