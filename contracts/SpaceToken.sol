@@ -8,7 +8,6 @@ import "zos-lib/contracts/migrations/Initializable.sol";
 
 // Just keep it here to make it loaded in tests
 import "zos-lib/contracts/upgradeability/AdminUpgradeabilityProxy.sol";
-import "./SplitMerge.sol";
 
 
 /*
@@ -37,8 +36,6 @@ contract SpaceToken is ERC721Token, Ownable, RBAC, Initializable {
   uint256 constant GEOHASH5_LIMIT = 1152921504606846975;
 
   uint256 packTokenIdCounter;
-  bool splitMergeSet;
-  SplitMerge splitMerge;
   mapping(bytes1 => uint8) eMap;
 
 
@@ -125,7 +122,7 @@ contract SpaceToken is ERC721Token, Ownable, RBAC, Initializable {
   function mintPack(
     address _to
   )
-    public
+    external
     onlyMinter
     returns (uint256)
   {
@@ -140,7 +137,7 @@ contract SpaceToken is ERC721Token, Ownable, RBAC, Initializable {
     address _to,
     uint256 _geohash5
   )
-    public
+    external
     onlyMinter
     returns (uint256)
   {
@@ -275,18 +272,11 @@ contract SpaceToken is ERC721Token, Ownable, RBAC, Initializable {
     return newId;
   }
 
-  function addRoleTo(address _operator, string _role) public onlyOwner {
+  function addRoleTo(address _operator, string _role) external onlyOwner {
     super.addRole(_operator, _role);
   }
 
-  function removeRoleFrom(address _operator, string _role) public onlyOwner {
+  function removeRoleFrom(address _operator, string _role) external onlyOwner {
     super.removeRole(_operator, _role);
-  }
-
-  function clearApprove(uint256 _tokenId) public {
-    address owner = ownerOf(_tokenId);
-    require(msg.sender == owner || isApprovedForAll(owner, msg.sender) || getApproved(_tokenId) == msg.sender);
-
-    tokenApprovals[_tokenId] = 0x0;
   }
 }

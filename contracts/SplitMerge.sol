@@ -5,13 +5,13 @@ import "zos-lib/contracts/migrations/Initializable.sol";
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "./SpaceToken.sol";
-import "./PlotManager.sol";
+
 
 contract SplitMerge is Initializable, Ownable {
   using SafeMath for uint256;
 
   SpaceToken spaceToken;
-  PlotManager plotManager;
+  address plotManager;
 
   event PackageInit(bytes32 id, address owner);
 
@@ -24,11 +24,7 @@ contract SplitMerge is Initializable, Ownable {
 
   uint256[] allPackages;
 
-  constructor () public {
-
-  }
-
-  function initialize(SpaceToken _spaceToken, PlotManager _plotManager) public isInitializer {
+  function initialize(SpaceToken _spaceToken, address _plotManager) public isInitializer {
     owner = msg.sender;
     spaceToken = _spaceToken;
     plotManager = _plotManager;
@@ -43,22 +39,21 @@ contract SplitMerge is Initializable, Ownable {
     address ownerOfToken = spaceToken.ownerOf(_spaceTokenId);
 
     require(
-      ownerOfToken == msg.sender
-      || spaceToken.isApprovedForAll(ownerOfToken, msg.sender)
-      || spaceToken.getApproved(_spaceTokenId) == msg.sender,
-        "This action not permitted for msg.sender"
-    );
+      /* solium-disable-next-line */
+      ownerOfToken == msg.sender || 
+      spaceToken.isApprovedForAll(ownerOfToken, msg.sender) || 
+      spaceToken.getApproved(_spaceTokenId) == msg.sender,
+      "This action not permitted for msg.sender");
     _;
   }
 
   function initPackage(uint256 _firstGeohashTokenId) public returns (uint256) {
-    address ownerOfTokenId = spaceToken.ownerOf(_firstGeohashTokenId);
-    uint256 _packageTokenId = spaceToken.mintPack(ownerOfTokenId);
+    uint256 _packageTokenId = spaceToken.mintPack(spaceToken.ownerOf(_firstGeohashTokenId));
     allPackages.push(_packageTokenId);
 
     addGeohashToPackageUnsafe(_packageTokenId, _firstGeohashTokenId);
 
-    emit PackageInit(bytes32(_packageTokenId), ownerOfTokenId);
+    emit PackageInit(bytes32(_packageTokenId), msg.sender);
 
     return _packageTokenId;
   }
@@ -159,7 +154,7 @@ contract SplitMerge is Initializable, Ownable {
       removeGeohashFromPackageUnsafe(_packageToken, _geohashTokens[i]);
     }
 
-    if(getPackageGeohashesCount(_packageToken) == 0) {
+    if (getPackageGeohashesCount(_packageToken) == 0) {
       spaceToken.transferFrom(spaceToken.ownerOf(_packageToken), address(this), _packageToken);
 //      setPackageContour(_packageToken, uint256[]);
     }
@@ -189,8 +184,8 @@ contract SplitMerge is Initializable, Ownable {
 
       bool childTokenExists = spaceToken.exists(childGeohashTokenId);
 
-      if(childTokenExists) {
-        if(spaceToken.ownerOf(childGeohashTokenId) == address(this)) {
+      if (childTokenExists) {
+        if (spaceToken.ownerOf(childGeohashTokenId) == address(this)) {
           spaceToken.transferFrom(address(this), tokenOwner, childGeohashTokenId);
         } else {
           require(false, "Child tokens must be not exists or owned by msg.sender or SplitMerge contract");
@@ -206,7 +201,8 @@ contract SplitMerge is Initializable, Ownable {
   }
 
   function mergeGeohash(uint256 _parentGeohashToken) public {
-    require(!spaceToken.exists(_parentGeohashToken) || spaceToken.ownerOf(_parentGeohashToken) == address(this),
+    require(
+      !spaceToken.exists(_parentGeohashToken) || spaceToken.ownerOf(_parentGeohashToken) == address(this),
       "Geohash parent must be not exits or owner should be SplitMerge");
 
     uint256 geohash5 = spaceToken.tokenIdToGeohash(_parentGeohashToken);
@@ -218,7 +214,7 @@ contract SplitMerge is Initializable, Ownable {
       uint256 childGeohash5 = uint256(childHex);
       uint256 childGeohashTokenId = spaceToken.geohashToTokenId(childGeohash5);
 
-      if(tokenOwner == address(0)) {
+      if (tokenOwner == address(0)) {
         tokenOwner = spaceToken.ownerOf(childGeohashTokenId);
       }
 
@@ -227,7 +223,7 @@ contract SplitMerge is Initializable, Ownable {
       spaceToken.transferFrom(tokenOwner, address(this), childGeohashTokenId);
     }
 
-    if(spaceToken.exists(_parentGeohashToken)) {
+    if (spaceToken.exists(_parentGeohashToken)) {
       spaceToken.transferFrom(address(this), tokenOwner, _parentGeohashToken);
     } else {
       spaceToken.mintGeohash(tokenOwner, geohash5);

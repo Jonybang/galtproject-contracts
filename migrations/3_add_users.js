@@ -1,5 +1,6 @@
 const PlotManager = artifacts.require('./PlotManager');
 const GaltDex = artifacts.require('./GaltDex');
+const Validators = artifacts.require('./Validators');
 const Web3 = require('web3');
 // const AdminUpgradeabilityProxy = artifacts.require('zos-lib/contracts/upgradeability/AdminUpgradeabilityProxy.sol');
 
@@ -20,6 +21,7 @@ module.exports = async function(deployer, network, accounts) {
     const data = JSON.parse(fs.readFileSync(`${__dirname}/../deployed/${network}.json`).toString());
     const plotManager = await PlotManager.at(data.plotManagerAddress);
     const galtDex = await GaltDex.at(data.galtDexAddress);
+    const validators = await Validators.at(data.validatorsAddress);
 
     const users = {
       Jonybang: '0xf0430bbb78c3c359c22d4913484081a563b86170',
@@ -47,19 +49,22 @@ module.exports = async function(deployer, network, accounts) {
       production: 0
     };
 
+    const APPLICATION_TYPE = await plotManager.APPLICATION_TYPE.call();
+    await validators.setApplicationTypeRoles(APPLICATION_TYPE, ['foo', 'bar', 'buzz'], [50, 25, 25], ['', '', ''], {
+      from: coreTeam
+    });
+
     const promises = [];
     _.forEach(users, (address, name) => {
       if (_.includes(validatorsList, name)) {
-        promises.push(
-          plotManager.addValidator(address, Web3.utils.utf8ToHex(name), Web3.utils.utf8ToHex('RU'), {
-            from: coreTeam
-          })
-        );
+        promises.push(validators.addValidator(address, name, 'MN', [], ['foo'], { from: coreTeam }));
       }
 
       if (_.includes(adminsList, name)) {
         promises.push(galtDex.addRoleTo(address, 'fee_manager', { from: coreTeam }));
-        promises.push(plotManager.addRoleTo(address, 'fee_manager', { from: coreTeam }));
+        // TODO: make plotManager rolable too
+        // promises.push(plotManager.addRoleTo(address, 'fee_manager', { from: coreTeam }));
+        promises.push(plotManager.setFeeManager(address, true, { from: coreTeam }));
       }
 
       if (!sendEthByNetwork[network]) {

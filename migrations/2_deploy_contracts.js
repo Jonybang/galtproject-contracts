@@ -4,6 +4,7 @@ const LandUtils = artifacts.require('./LandUtils');
 const PlotManager = artifacts.require('./PlotManager');
 const SplitMerge = artifacts.require('./SplitMerge');
 const GaltDex = artifacts.require('./GaltDex');
+const Validators = artifacts.require('./Validators');
 const Web3 = require('web3');
 const galt = require('@galtproject/utils');
 
@@ -33,6 +34,7 @@ module.exports = async function(deployer, network, accounts) {
     const landUtils = await LandUtils.new({ from: coreTeam });
 
     const galtDex = await GaltDex.new({ from: coreTeam });
+    const validators = await Validators.new({ from: coreTeam });
 
     // Setup proxies...
     // NOTICE: The address of a proxy creator couldn't be used in the future for logic contract calls.
@@ -56,9 +58,16 @@ module.exports = async function(deployer, network, accounts) {
 
     await splitMerge.initialize(spaceToken.address, plotManager.address, { from: coreTeam });
 
-    await plotManager.initialize(Web3.utils.toWei('0.1', 'ether'), '25', spaceToken.address, splitMerge.address, {
-      from: coreTeam
-    });
+    await plotManager.initialize(
+      spaceToken.address,
+      splitMerge.address,
+      validators.address,
+      galtToken.address,
+      coreTeam,
+      {
+        from: coreTeam
+      }
+    );
 
     await landUtils.initialize({ from: coreTeam });
 
@@ -96,7 +105,9 @@ module.exports = async function(deployer, network, accounts) {
             landUtilsAddress: landUtils.address,
             landUtilsAbi: landUtils.abi,
             galtDexAddress: galtDex.address,
-            galtDexAbi: galtDex.abi
+            galtDexAbi: galtDex.abi,
+            validatorsAddress: validators.address,
+            validatorsAbi: validators.abi
           },
           null,
           2

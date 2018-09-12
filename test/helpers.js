@@ -1,5 +1,7 @@
 const Web3 = require('web3');
 
+const { BN } = Web3.utils;
+
 let web3;
 
 module.exports = {
@@ -9,6 +11,9 @@ module.exports = {
   zeroAddress: '0x0000000000000000000000000000000000000000',
   hex(input) {
     return web3.utils.toHex(input);
+  },
+  gwei(number) {
+    return web3.utils.toWei(number.toString(), 'gwei');
   },
   szabo(number) {
     return web3.utils.toWei(number.toString(), 'szabo');
@@ -36,6 +41,17 @@ module.exports = {
       return;
     }
     assert.fail('Expected throw not received');
+  },
+  assertEqualBN(actual, expected) {
+    assert(actual instanceof BN);
+    assert(expected instanceof BN);
+
+    assert(
+      actual.toString(10) === expected.toString(10),
+      `Expected ${web3.utils.fromWei(actual)} (actual) ether to be equal ${web3.utils.fromWei(
+        expected
+      )} ether (expected)`
+    );
   },
   async printStorage(address, slotsToPrint) {
     assert(typeof address !== 'undefined');
